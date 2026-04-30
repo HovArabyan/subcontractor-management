@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BuildOps vs. ServiceTitan — Subcontractor Feature Comparison</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f4f5f7;
+      color: #1a1a2e;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      background: #0265DC;
+      color: #fff;
+      padding: 32px 48px 28px;
+    }
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+    }
+    .page-header .meta {
+      font-size: 12px;
+      opacity: 0.75;
+      margin-bottom: 20px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 12px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-green  { background: #22c55e; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-red    { background: #94a3b8; }
+
+    /* ── Scorecard bar ── */
+    .scorecard-bar {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0 48px;
+      overflow-x: auto;
+    }
+    .scorecard-bar table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .scorecard-bar th {
+      padding: 12px 14px;
+      text-align: left;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .scorecard-bar td {
+      padding: 11px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: top;
+    }
+    .scorecard-bar tr:last-child td { border-bottom: none; }
+    .scorecard-bar td:first-child { font-weight: 600; color: #1e293b; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .badge-blue   { background: #dbeafe; color: #1d4ed8; }
+    .badge-green  { background: #dcfce7; color: #15803d; }
+    .badge-amber  { background: #fef3c7; color: #b45309; }
+    .badge-slate  { background: #f1f5f9; color: #475569; }
+
+    /* ── Main content ── */
+    .content { padding: 28px 48px 60px; max-width: 1200px; margin: 0 auto; }
+
+    /* ── Theme sections ── */
+    .theme-section {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: box-shadow 0.15s;
+    }
+    .theme-section:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+
+    .theme-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 22px;
+      cursor: pointer;
+      user-select: none;
+      gap: 16px;
+    }
+    .theme-header:hover { background: #f8fafc; }
+
+    .theme-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+    .theme-number {
+      background: #0265DC;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .theme-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* collapsed summary pills */
+    .theme-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      flex: 1;
+    }
+    .summary-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11.5px;
+      color: #334155;
+      white-space: nowrap;
+    }
+    .pill-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+    .pill-st   { background: #0265DC; }
+    .pill-bo   { background: #f59e0b; }
+    .pill-both { background: #22c55e; }
+
+    .chevron {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      color: #94a3b8;
+      transition: transform 0.2s;
+    }
+    .chevron svg { width: 16px; height: 16px; }
+    .theme-section.open .chevron { transform: rotate(180deg); }
+
+    /* table panel */
+    .theme-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .theme-section.open .theme-body { max-height: 2000px; }
+
+    .theme-body-inner {
+      border-top: 1px solid #e2e8f0;
+      overflow-x: auto;
+    }
+
+    /* comparison table */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .comp-table thead th {
+      background: #f8fafc;
+      padding: 10px 16px;
+      text-align: left;
+      font-weight: 600;
+      color: #475569;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    .comp-table thead th:first-child { width: 18%; }
+    .comp-table thead th:nth-child(2),
+    .comp-table thead th:nth-child(3) { width: 31%; }
+    .comp-table thead th:last-child { width: 20%; }
+
+    .comp-table tbody td {
+      padding: 11px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .comp-table tbody tr:last-child td { border-bottom: none; }
+    .comp-table tbody tr:hover td { background: #fafbff; }
+    .comp-table td:first-child {
+      font-weight: 600;
+      color: #1e293b;
+      font-size: 12.5px;
+    }
+
+    /* advantage column */
+    .adv-st     { color: #1d4ed8; font-weight: 600; }
+    .adv-bo     { color: #b45309; font-weight: 600; }
+    .adv-parity { color: #475569; }
+
+    /* phase tags inline */
+    .p0  { color: #15803d; font-weight: 600; }
+    .p1  { color: #7c3aed; font-weight: 600; }
+    .p2  { color: #9f1239; font-weight: 600; }
+
+    /* ── Bottom sections ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #94a3b8;
+      margin: 32px 0 12px;
+    }
+
+    .tldr-box {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #0265DC;
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: #334155;
+    }
+    .tldr-box p + p { margin-top: 10px; }
+    .tldr-box strong { color: #0f172a; }
+
+    /* expand/collapse all */
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .toolbar button {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: #475569;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.1s, color 0.1s;
+    }
+    .toolbar button:hover { background: #0265DC; color: #fff; border-color: #0265DC; }
+  </style>
+</head>
+<body>
+
+<!-- ── Page Header ── -->
+<div class="page-header">
+  <h1>BuildOps vs. ServiceTitan — Subcontractor Feature Comparison</h1>
+  <div class="meta">BuildOps baseline: April 23, 2026 &nbsp;·&nbsp; ST baseline: FY27 Alignment &amp; confirmed decisions</div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot dot-green"></div> ✅ Shipped / confirmed</div>
+    <div class="legend-item"><div class="legend-dot dot-yellow"></div> 🔶 Partial</div>
+    <div class="legend-item"><div class="legend-dot dot-red"></div> ❌ Not present</div>
+    <div class="legend-item" style="margin-left:8px; border-left:1px solid rgba(255,255,255,0.3); padding-left:16px;">
+      <span class="badge badge-green">P0</span> FY27 H1
+    </div>
+    <div class="legend-item"><span class="badge badge-blue">P1</span> FY27 H2</div>
+    <div class="legend-item"><span class="badge badge-amber">P2</span> FY28+</div>
+  </div>
+</div>
+
+<!-- ── Scorecard Bar ── -->
+<div class="scorecard-bar">
+  <table>
+    <thead>
+      <tr>
+        <th>Theme</th>
+        <th>BuildOps Today</th>
+        <th>ST P0</th>
+        <th>ST P1</th>
+        <th>ST P2</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Setup &amp; Directory</td>
+        <td>Strong but compliance is broken</td>
+        <td>✅ Comparable + COI/W9 advantage</td>
+        <td>Expiry alerts + agentic monitoring</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Assignment</td>
+        <td>Strong (Jobs + Projects)</td>
+        <td>✅ Comparable + cleaner status model</td>
+        <td>Task assignment</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Costing &amp; Budgeting</td>
+        <td>Most mature — CCOs + retainage + dedicated SC object</td>
+        <td>🔶 Foundation only (PO-based); SA costing is ST-unique</td>
+        <td>Full SC object + CCOs + retainage</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Communication</td>
+        <td>Outbound PDF/email only; zero inbound</td>
+        <td>✅ CommHub threading is a step-change advantage</td>
+        <td>Loginless QC forms</td>
+        <td>SMS + portal comms</td>
+      </tr>
+      <tr>
+        <td>Closeout &amp; Reports</td>
+        <td>Bill lifecycle deep; no cross-project spend report</td>
+        <td>✅ Sub Spend Report is ST-unique P0 deliverable</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── Main Content ── -->
+<div class="content">
+
+  <div class="toolbar">
+    <button onclick="setAll(true)">Expand all</button>
+    <button onclick="setAll(false)">Collapse all</button>
+  </div>
+
+  <!-- ── THEME 1 ── -->
+  <div class="theme-section" id="t1">
+    <div class="theme-header" onclick="toggle('t1')">
+      <div class="theme-title-row">
+        <div class="theme-number">1</div>
+        <div class="theme-name">Subcontractor Setup &amp; Management</div>
+      </div>
+      <div class="theme-summary" id="t1-summary">
+        <div class="summary-pill"><div class="pill-dot pill-both"></div>Both have sub entity creation &amp; specialties</div>
+        <div class="summary-pill"><div class="pill-dot pill-st"></div>ST advantage: COI/W9/license at P0; expiry alerts at P1</div>
+        <div class="summary-pill"><div class="pill-dot pill-bo"></div>BuildOps compliance UI not rebuilt (April 2026)</div>
+      </div>
+      <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="theme-body">
+      <div class="theme-body-inner">
+        <table class="comp-table">
+          <thead>
+            <tr><th>Feature</th><th>BuildOps</th><th>ST Plan</th><th>Advantage</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Create sub entity</td>
+              <td>✅ <code>Subcontractor</code> vendor type</td>
+              <td><span class="p0">P0</span> — Vendor extension; "Subcontractor" type unlocks sub-specific fields; tabs (All / Suppliers / Subcontractors) on Vendors screen; dedicated nav entry long-term</td>
+              <td class="adv-parity">Parity at P0</td>
+            </tr>
+            <tr>
+              <td>Trade specialties</td>
+              <td>✅ Custom multi-select "Subcontractor Types" field</td>
+              <td><span class="p0">P0</span> — Trade specialties on sub vendor record</td>
+              <td class="adv-parity">Parity</td>
+            </tr>
+            <tr>
+              <td>Subcontractor Contacts</td>
+              <td>✅ Multiple contacts; preferred contact flag; notes per contact</td>
+              <td><span class="p0">P0</span> — Contact info on sub vendor record</td>
+              <td class="adv-bo">BuildOps slightly deeper (preferred contact + per-contact notes)</td>
+            </tr>
+            <tr>
+              <td>Compliance Docs</td>
+              <td>🔶 COI upload + expiry date + misc. file attachments — legacy component, not rebuilt in April 2026 release</td>
+              <td><span class="p0">P0</span> — COI storage + expiry date + visual status badge (red when expired) + W9 on-file indicator</td>
+              <td class="adv-st">ST advantage — BuildOps compliance UI is broken; ST ships this clean</td>
+            </tr>
+            <tr>
+              <td>Compliance expiry alerts</td>
+              <td>❌ Not present</td>
+              <td><span class="p1">P1</span> — Compliance Doc Alerts (COI expiry notifications)</td>
+              <td class="adv-st">ST advantage (planned)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── THEME 2 ── -->
+  <div class="theme-section" id="t2">
+    <div class="theme-header" onclick="toggle('t2')">
+      <div class="theme-title-row">
+        <div class="theme-number">2</div>
+        <div class="theme-name">Assignment</div>
+      </div>
+      <div class="theme-summary" id="t2-summary">
+        <div class="summary-pill"><div class="pill-dot pill-both"></div>Both support Job + Project assignment</div>
+        <div class="summary-pill"><div class="pill-dot pill-st"></div>ST: dedicated Subcontractors tab + specialty filter at P0</div>
+        <div class="summary-pill"><div class="pill-dot pill-st"></div>ST P1: Project Plan Task assignment</div>
+      </div>
+      <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="theme-body">
+      <div class="theme-body-inner">
+        <table class="comp-table">
+          <thead>
+            <tr><th>Feature</th><th>BuildOps</th><th>ST Plan</th><th>Advantage</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Assign sub to Job + Project</td>
+              <td>✅ From Project → Commitments tab + ✅ From Job → Parts &amp; Purchasing tab</td>
+              <td><span class="p0">P0</span> — Projects: new dedicated "Subcontractors" tab + Job: dedicated "Subcontractors" card</td>
+              <td class="adv-parity">Parity; ST slightly better UX</td>
+            </tr>
+            <tr>
+              <td>Assign sub to Project Plan Tasks</td>
+              <td>❌ Not present</td>
+              <td><span class="p1">P1</span> — Task-level sub assignment</td>
+              <td class="adv-st">ST advantage (planned)</td>
+            </tr>
+            <tr>
+              <td>Scope of work on assignment</td>
+              <td>✅ Dedicated SOW free-text field</td>
+              <td><span class="p0">P0</span> — Scope of work text on assignment record</td>
+              <td class="adv-parity">Parity</td>
+            </tr>
+            <tr>
+              <td>Budget Code on Scope of Work</td>
+              <td>✅ Cost Code + Cost Type + Project Phase per line</td>
+              <td><span class="p0">P0</span> — Budget Codes on assignment and linked POs</td>
+              <td class="adv-parity">Parity</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── THEME 3 ── -->
+  <div class="theme-section" id="t3">
+    <div class="theme-header" onclick="toggle('t3')">
+      <div class="theme-title-row">
+        <div class="theme-number">3</div>
+        <div class="theme-name">Costing &amp; Budgeting</div>
+      </div>
+      <div class="theme-summary" id="t3-summary">
+        <div class="summary-pill"><div class="pill-dot pill-bo"></div>BuildOps most mature: CCOs, retainage, dedicated SC object — all live</div>
+        <div class="summary-pill"><div class="pill-dot pill-st"></div>ST P0: PO-based foundation + SA sub cost field (ST-unique)</div>
+        <div class="summary-pill"><div class="pill-dot pill-st"></div>ST P1: Full SC object + CCOs + retainage to close the gap</div>
+      </div>
+      <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="theme-body">
+      <div class="theme-body-inner">
+        <table class="comp-table">
+          <thead>
+            <tr><th>Feature</th><th>BuildOps</th><th>ST Plan</th><th>Advantage</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sub cost in project financials</td>
+              <td>✅ Original Committed / CCO delta / Updated Committed / Open Committed — granular breakdown</td>
+              <td><span class="p0">P0</span> — Sub-PO costs surfaced in job costing and BvA</td>
+              <td class="adv-bo">BuildOps more granular (because CCOs exist)</td>
+            </tr>
+            <tr>
+              <td>Service Agreement sub cost budget</td>
+              <td>❌ No SA concept</td>
+              <td><span class="p0">P0</span> — Sub cost field at SA budget level; individual visits book as jobs and flow into job assignment</td>
+              <td class="adv-st">ST advantage — ST-native concept; BuildOps has no equivalent</td>
+            </tr>
+            <tr>
+              <td>Subcontract Object</td>
+              <td>✅ SC-XXXXX numbering; own list view; own lifecycle</td>
+              <td><span class="p0">P0</span> leverages existing PO flow; <span class="p1">P1</span> — dedicated Subcontract object</td>
+              <td class="adv-bo">BuildOps advantage at P0</td>
+            </tr>
+            <tr>
+              <td>Commitment Change Orders (CCOs)</td>
+              <td>✅ Formal CCO workflow; add/modify lines; audit trail; project financial impact columns</td>
+              <td><span class="p1">P1</span></td>
+              <td class="adv-bo">BuildOps advantage</td>
+            </tr>
+            <tr>
+              <td>AP Retainage — tracking</td>
+              <td>✅ Vendor defaults → subcontract lines → bills; withheld amounts tracked per line</td>
+              <td><span class="p1">P1</span> — Shown in prototype (themes go beyond strict MVP)</td>
+              <td class="adv-bo">BuildOps advantage until P1</td>
+            </tr>
+            <tr>
+              <td>AP Retainage — release workflow</td>
+              <td>✅ Centralized AP Retainage screen; partial/bulk release; auto-generates Retainage Release Bills</td>
+              <td><span class="p1">P1</span></td>
+              <td class="adv-bo">BuildOps advantage until P1</td>
+            </tr>
+            <tr>
+              <td>Track contracted / paid / remaining</td>
+              <td>✅ Original Contract Value, Revised Contract Value, Remaining Retainage on subcontract</td>
+              <td><span class="p0">P0</span> — Running total of contracted amount, amount drawn, remaining balance against PO</td>
+              <td class="adv-parity">Parity at P0; BuildOps adds retainage layer on top</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── THEME 4 ── -->
+  <div class="theme-section" id="t4">
+    <div class="theme-header" onclick="toggle('t4')">
+      <div class="theme-title-row">
+        <div class="theme-number">4</div>
+        <div class="theme-name">Communication &amp; Document Sharing</div>
+      </div>
+      <div class="theme-summary" id="t4-summary">
+        <div class="summary-pill"><div class="pill-dot pill-bo"></div>BuildOps: outbound email + branded PDFs only; zero inbound</div>
+        <div class="summary-pill"><div class="pill-dot pill-st"></div>ST P0: CommHub two-way threading with external subs — auto-logged</div>
+        <div class="summary-pill"><div class="pill-dot pill-st"></div>ST P2: Full sub portal for invoicing, docs &amp; collaboration</div>
+      </div>
+      <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="theme-body">
+      <div class="theme-body-inner">
+        <table class="comp-table">
+          <thead>
+            <tr><th>Feature</th><th>BuildOps</th><th>ST Plan</th><th>Advantage</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Email sub from the platform</td>
+              <td>✅ "Email PDF" button; standard email dialog with subcontract PDF attached</td>
+              <td><span class="p0">P0</span> — CommHub outbound email to external (non-ST) subs; threads replies back into ST automatically</td>
+              <td class="adv-st">ST advantage — CommHub threading is a fundamentally richer capability</td>
+            </tr>
+            <tr>
+              <td>Audit trail — communication</td>
+              <td>❌ No inbound communication; nothing to log</td>
+              <td><span class="p0">P0</span> — CommHub conversation thread is the audit trail; all outbound + inbound emails logged</td>
+              <td class="adv-st">ST advantage</td>
+            </tr>
+            <tr>
+              <td>Customizable branded PDF templates</td>
+              <td>✅ Multiple templates per PO/subcontract; field control; company + dept logos</td>
+              <td>❌ Not in ST plan</td>
+              <td class="adv-bo">BuildOps advantage</td>
+            </tr>
+            <tr>
+              <td>External sub portal</td>
+              <td>❌ Not present; no roadmap signal</td>
+              <td><span class="p2">P2</span> — Full Sub Portal: invoice submission, compliance doc upload, project visibility, rich communication</td>
+              <td class="adv-st">ST long-term advantage</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── THEME 5 ── -->
+  <div class="theme-section" id="t5">
+    <div class="theme-header" onclick="toggle('t5')">
+      <div class="theme-title-row">
+        <div class="theme-number">5</div>
+        <div class="theme-name">Closeout &amp; Reports</div>
+      </div>
+      <div class="theme-summary" id="t5-summary">
+        <div class="summary-pill"><div class="pill-dot pill-both"></div>Both: standard bill approval flow at P0</div>
+        <div class="summary-pill"><div class="pill-dot pill-st"></div>ST P0: dedicated cross-project Sub Spend Report — BuildOps has nothing equivalent</div>
+        <div class="summary-pill"><div class="pill-dot pill-bo"></div>BuildOps: retainage tracking at closeout — ST catches up at P1</div>
+      </div>
+      <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="theme-body">
+      <div class="theme-body-inner">
+        <table class="comp-table">
+          <thead>
+            <tr><th>Feature</th><th>BuildOps</th><th>ST Plan</th><th>Advantage</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bill approval + payment release</td>
+              <td>✅ Pending → Confirmed → Approved → Posted lifecycle</td>
+              <td><span class="p0">P0</span> — Existing bill approval flow; posting = payment release; no separate QC gate</td>
+              <td class="adv-parity">Parity</td>
+            </tr>
+            <tr>
+              <td>Cross-project sub spend report</td>
+              <td>🔶 Project-level financial view only; no standalone cross-project sub spend surface</td>
+              <td><span class="p0">P0</span> — Dedicated Sub Spend Report: by sub / by project / by trade / sub spend as % of total job cost</td>
+              <td class="adv-st">ST advantage — one of ST's 4 core P0 deliverables; BuildOps has no equivalent</td>
+            </tr>
+            <tr>
+              <td>Retainage tracking at closeout</td>
+              <td>✅ Remaining Retainage per subcontract and per bill; full release audit trail</td>
+              <td><span class="p1">P1</span> — Shown in prototype</td>
+              <td class="adv-bo">BuildOps advantage until P1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TL;DR ── -->
+  <div class="section-label">Competitive Position</div>
+  <div class="tldr-box">
+    <p><strong>BuildOps has a head start on AP/billing depth</strong> — retainage, CCOs, and a dedicated Subcontract object are all live today and won't be in ST until P1. They also have polished outbound document workflows (branded PDFs, RBAC).</p>
+    <p><strong>ServiceTitan wins on integration breadth</strong> — SA costing, CommHub two-way threading, native dispatch, and the Sub Spend Report are things BuildOps structurally cannot replicate. The P1/P2 roadmap (portal, AI-assisted selection, performance ratings, loginless forms) is more ambitious than anything BuildOps has signaled.</p>
+  </div>
+
+</div>
+
+<script>
+  function toggle(id) {
+    const el = document.getElementById(id);
+    const isOpen = el.classList.contains('open');
+    el.classList.toggle('open', !isOpen);
+    // show/hide summary pills
+    const summary = el.querySelector('.theme-summary');
+    summary.style.display = isOpen ? 'flex' : 'none';
+  }
+
+  function setAll(open) {
+    ['t1','t2','t3','t4','t5'].forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.toggle('open', open);
+      el.querySelector('.theme-summary').style.display = open ? 'none' : 'flex';
+    });
+  }
+
+  // Init: all collapsed, summaries visible
+  document.addEventListener('DOMContentLoaded', () => {
+    ['t1','t2','t3','t4','t5'].forEach(id => {
+      const el = document.getElementById(id);
+      el.querySelector('.theme-summary').style.display = 'flex';
+    });
+  });
+</script>
+</body>
+</html>
