@@ -869,7 +869,7 @@ const ASSIGNMENTS_INIT = [
   { id:3, subId:2, jobId:"J-1038", scope:"Supply and install 4× Trane 25-ton RTUs including all ductwork mods and controls integration",        status:"active",    costCode:"15-700 · HVAC",              contractedAmt:126500, pos:[{id:"PO-4388",amt:63250,status:"paid",description:"Equipment supply – 4× RTUs",date:"Sep 20, 2025"},{id:"PO-4410",amt:63250,status:"pending",description:"Installation labor and controls",date:"Oct 14, 2025"}] },
   { id:4, subId:5, jobId:"J-1048", scope:"Rough-in plumbing for generator cooling system and emergency floor drains",                            status:"active",    costCode:"15-300 · Plumbing",          contractedAmt:9400,   pos:[{id:"PO-4405",amt:9400,status:"paid",description:"Cooling and drain rough-in complete",date:"Nov 18, 2025"}] },
   { id:5, subId:1, jobId:"J-1055", scope:"200A to 400A panel upgrade, meter socket replacement, and service entrance conductors",                status:"completed", costCode:"16-100 · Electrical",        contractedAmt:16200,  pos:[{id:"PO-4395",amt:16200,status:"paid",description:"Panel upgrade – final billing",date:"Jan 8, 2026"}] },
-  { id:6, subId:6, jobId:"J-1061", scope:"Install 42 LED parking lot fixtures, underground conduit runs, and photocell controls",                status:"active",    costCode:"16-500 · Lighting",          contractedAmt:31500,  pos:[] },
+  { id:6, subId:6, jobId:"J-1061", scope:"Install 42 LED parking lot fixtures, underground conduit runs, and photocell controls",                status:"invited",   costCode:"16-500 · Lighting",          contractedAmt:31500,  pos:[], notifiedAt:"May 2, 2026" },
   { id:7, subId:6, jobId:"J-1064", scope:"TPO roofing for main building (24,000 sq ft) and covered parking structure",                          status:"active",    costCode:"07-500 · Membrane Roofing", contractedAmt:112000, pos:[{id:"PO-4440",amt:30000,status:"pending",description:"Mobilization and materials deposit",date:"Mar 10, 2026"}] },
 ];
 
@@ -1973,7 +1973,7 @@ const SpendView = ({ subs, assignments, jobs, onViewSub, expandedId, setExpanded
 /* ================================================================
    ASSIGNMENTS VIEW
    ================================================================ */
-const AssignmentsView = ({ assignments, subs, jobs, onNew }) => {
+const AssignmentsView = ({ assignments, subs, jobs, onNew, onNotify }) => {
   const [statusFil, setStatusFil] = useState(null);
 
   const getSubById = id => subs.find(s => s.id === id);
@@ -2048,6 +2048,7 @@ const AssignmentsView = ({ assignments, subs, jobs, onNew }) => {
                   <th>Contracted</th>
                   <th>PO Paid</th>
                   <th>PO Pending</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -2088,12 +2089,134 @@ const AssignmentsView = ({ assignments, subs, jobs, onNew }) => {
                           ? <span style={{fontSize:13,fontWeight:600,color:"var(--warning-text)"}}>{fmtDollar(poPending)}</span>
                           : <span style={{color:"var(--text-muted)"}}>—</span>}
                       </td>
+                      <td>
+                        {a.status === "invited" ? (
+                          <div style={{display:"flex",flexDirection:"column",gap:3}}>
+                            <button className="btn btn-xs btn-secondary" onClick={()=>onNotify(a)}>
+                              <Ic n="mail" s={11}/> Resend
+                            </button>
+                            {a.notifiedAt && <div style={{fontSize:10,color:"var(--text-subdued)"}}>Sent {a.notifiedAt}</div>}
+                          </div>
+                        ) : a.status === "active" && !a.notifiedAt ? (
+                          <button className="btn btn-xs btn-primary" onClick={()=>onNotify(a)}>
+                            <Ic n="mail" s={11}/> Notify Sub
+                          </button>
+                        ) : (
+                          <span style={{color:"var(--text-muted)",fontSize:12}}>—</span>
+                        )}
+                      </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
           )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   NOTIFY SUB DRAWER
+   ================================================================ */
+const NotifySubDrawer = ({ assignment, subs, jobs, onClose, onSend }) => {
+  const sub = subs.find(s => s.id === assignment.subId);
+  const job = jobs.find(j => j.id === assignment.jobId);
+  const isResend = !!assignment.notifiedAt;
+
+  const defaultBody =
+`Hi ${sub?.contact?.split(" ")[0] || "there"},
+
+We'd like to invite ${sub?.name || "your company"} to perform the following work:
+
+Project: ${job?.name || assignment.jobId}
+Scope: ${assignment.scope}${assignment.contractedAmt > 0 ? `\nContracted Amount: ${fmtDollar(assignment.contractedAmt)}` : ""}${assignment.costCode ? `\nCost Code: ${assignment.costCode}` : ""}
+
+Please review the details and accept or decline this assignment through the link below. Once accepted, you'll have access to the full job details and documents through your Subcontractor Portal.
+
+Reply to this email or contact us directly with any questions.
+
+Thank you,
+Your Project Manager`;
+
+  const [to,      setTo]      = useState(sub?.email || "");
+  const [subject, setSubject] = useState(`Assignment ${isResend ? "Reminder" : "Invitation"}: ${job?.name || assignment.jobId}`);
+  const [body,    setBody]    = useState(defaultBody);
+  const [sent,    setSent]    = useState(false);
+
+  if (sent) return (
+    <div className="backdrop" onClick={e => e.target===e.currentTarget && onClose()}>
+      <div className="drawer" style={{alignItems:"center",justifyContent:"center",gap:16}}>
+        <div style={{fontSize:48}}>✅</div>
+        <div style={{fontSize:18,fontWeight:800,color:"var(--text-default)"}}>Assignment Sent</div>
+        <div style={{fontSize:13,color:"var(--text-subdued)",textAlign:"center",maxWidth:320,lineHeight:1.6}}>
+          {sub?.contact} at <strong>{sub?.name}</strong> has been notified.<br/>
+          Their assignment status is now <strong>Invited</strong> — you'll see it update here when they respond.
+        </div>
+        <button className="btn btn-md btn-primary" style={{marginTop:8}} onClick={onClose}>Done</button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="backdrop" onClick={e => e.target===e.currentTarget && onClose()}>
+      <div className="drawer">
+        <div className="drawer__header">
+          <span className="drawer__title">{isResend ? "Resend Assignment" : "Notify Subcontractor"}</span>
+          <button className="drawer__close" onClick={onClose}><Ic n="close" s={18}/></button>
+        </div>
+
+        <div className="drawer__body">
+          {/* Assignment context strip */}
+          <div className="assign-summary">
+            <div style={{display:"flex",alignItems:"center",gap:10,flex:1}}>
+              <div className="avatar avatar-sm">{initials(sub?.name||"?")}</div>
+              <div>
+                <div style={{fontWeight:700,fontSize:13}}>{sub?.name}</div>
+                <div style={{fontSize:12,color:"var(--text-subdued)"}}>{sub?.trades?.[0]}</div>
+              </div>
+            </div>
+            <div style={{color:"var(--text-subdued)",fontSize:18}}>→</div>
+            <div style={{flex:1}}>
+              <div style={{fontWeight:700,fontSize:13}}>{job?.name||assignment.jobId}</div>
+              <div style={{fontSize:12,color:"var(--text-subdued)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:200}}>{assignment.scope}</div>
+            </div>
+          </div>
+
+          {isResend && (
+            <div className="alert alert-warning">
+              <Ic n="warn" s={15}/>
+              <span>Originally sent <strong>{assignment.notifiedAt}</strong>. Sub has not yet responded.</span>
+            </div>
+          )}
+
+          <div className="form-section">
+            <div className="form-section__title">Email</div>
+            <div className="form-field">
+              <label className="form-label">To</label>
+              <input className="form-input" value={to} onChange={e=>setTo(e.target.value)} placeholder="recipient@company.com"/>
+            </div>
+            <div className="form-field">
+              <label className="form-label">Subject</label>
+              <input className="form-input" value={subject} onChange={e=>setSubject(e.target.value)}/>
+            </div>
+            <div className="form-field">
+              <label className="form-label">Message</label>
+              <textarea className="form-textarea" rows={14} value={body} onChange={e=>setBody(e.target.value)}/>
+            </div>
+          </div>
+
+          <div style={{background:"var(--bg-grey-subdued)",border:"1px solid var(--border-grey)",borderRadius:"var(--r-md)",padding:"10px 14px",fontSize:12,color:"var(--text-subdued)"}}>
+            <Ic n="portal" s={13}/> A <strong>portal link</strong> will be appended automatically so the sub can accept or decline directly from the email.
+          </div>
+        </div>
+
+        <div className="drawer__footer">
+          <button className="btn btn-md btn-secondary" onClick={onClose}>Cancel</button>
+          <button className="btn btn-md btn-primary" disabled={!to.trim()} onClick={()=>{ setSent(true); onSend(assignment.id); }}>
+            <Ic n="mail" s={15}/> {isResend ? "Resend Notification" : "Send Assignment"}
+          </button>
         </div>
       </div>
     </div>
@@ -3422,12 +3545,13 @@ const ScheduleView = ({schedule, subs, jobs, onNew}) => {
 /* ================================================================
    FEATURE 8 — SUB PORTAL PREVIEW
    ================================================================ */
-const SubPortalView = ({subs, assignments, jobs}) => {
+const SubPortalView = ({subs, assignments, jobs, onAccept, onDecline}) => {
   const activeSubs = subs.filter(s=>s.status==="active");
   const [selSubId, setSelSubId] = useState(activeSubs[0]?.id||null);
   const sub = subs.find(s=>s.id===selSubId);
-  const myAssign = assignments.filter(a=>a.subId===selSubId&&a.status==="active");
-  const totalPaid = assignments.filter(a=>a.subId===selSubId)
+  const myAssign   = assignments.filter(a=>a.subId===selSubId&&a.status==="active");
+  const myInvited  = assignments.filter(a=>a.subId===selSubId&&a.status==="invited");
+  const totalPaid  = assignments.filter(a=>a.subId===selSubId)
     .reduce((t,a)=>t+a.pos.filter(p=>p.status==="paid").reduce((s,p)=>s+p.amt,0),0);
 
   return (
@@ -3477,6 +3601,52 @@ const SubPortalView = ({subs, assignments, jobs}) => {
             </div>
             <span className="badge badge-success" style={{fontSize:12}}>Active Vendor</span>
           </div>
+
+          {/* Pending invitations */}
+          {myInvited.length > 0 && (
+            <div style={{padding:"20px 28px 0"}}>
+              <div className="portal-section-label" style={{color:"var(--warning-text)"}}>
+                Pending Invitations — Action Required
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                {myInvited.map(a => {
+                  const job = jobs.find(j=>j.id===a.jobId);
+                  return (
+                    <div key={a.id} style={{border:"2px solid var(--warning)",borderRadius:"var(--r-md)",padding:"16px 20px",background:"#FFFDF0"}}>
+                      <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:10}}>
+                        <div>
+                          <div style={{fontWeight:700,fontSize:14}}>{job?.name||a.jobId}</div>
+                          <div style={{fontSize:12,color:"var(--text-subdued)",marginTop:2}}>{job?.address}</div>
+                        </div>
+                        <span className="badge badge-warning">Awaiting Response</span>
+                      </div>
+                      <div style={{fontSize:13,lineHeight:1.6,marginBottom:14,padding:"8px 12px",background:"white",borderRadius:"var(--r-sm)",border:"1px solid var(--border-grey)"}}>
+                        <span style={{fontSize:11,fontWeight:700,color:"var(--text-subdued)",textTransform:"uppercase",display:"block",marginBottom:3}}>Scope of Work</span>
+                        {a.scope}
+                      </div>
+                      {a.contractedAmt > 0 && (
+                        <div style={{marginBottom:14}}>
+                          <span style={{fontSize:11,fontWeight:700,color:"var(--text-subdued)",textTransform:"uppercase",letterSpacing:"0.5px"}}>Contracted Amount </span>
+                          <span style={{fontWeight:800,fontSize:15}}>{fmtDollar(a.contractedAmt)}</span>
+                          {a.costCode && <span style={{fontSize:12,color:"var(--text-subdued)",marginLeft:10}}>{a.costCode}</span>}
+                        </div>
+                      )}
+                      <div style={{display:"flex",gap:10}}>
+                        <button className="btn btn-md btn-primary" style={{background:"var(--success)",borderColor:"var(--success)"}}
+                          onClick={()=>onAccept(a.id)}>
+                          <Ic n="check" s={15}/> Accept Assignment
+                        </button>
+                        <button className="btn btn-md btn-secondary" style={{color:"var(--danger)",borderColor:"var(--danger)"}}
+                          onClick={()=>onDecline(a.id)}>
+                          Decline
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Active jobs */}
           <div style={{padding:"20px 28px"}}>
@@ -3596,6 +3766,9 @@ function App() {
   const [complianceDocs]                = useState(COMPLIANCE_DOCS_INIT);
   const [schedule]                      = useState(SCHEDULE_INIT);
   const [selectedContract, setSelectedContract] = useState(null);
+  // Notify flow state
+  const [showNotify,   setShowNotify]   = useState(false);
+  const [notifyTarget, setNotifyTarget] = useState(null);
 
   const openAssign = useCallback((sub = null) => {
     setAssignTarget(sub);
@@ -3637,6 +3810,26 @@ function App() {
   const goToSub = useCallback(sub => {
     setSection("directory");
     setSelected(sub);
+  }, []);
+
+  const handleNotifySend = useCallback(assignmentId => {
+    setAssignments(prev => prev.map(a =>
+      a.id === assignmentId ? { ...a, status: "invited", notifiedAt: "May 4, 2026" } : a
+    ));
+    setShowNotify(false);
+    setNotifyTarget(null);
+  }, []);
+
+  const handleAcceptAssignment = useCallback(assignmentId => {
+    setAssignments(prev => prev.map(a =>
+      a.id === assignmentId ? { ...a, status: "active", notifiedAt: a.notifiedAt } : a
+    ));
+  }, []);
+
+  const handleDeclineAssignment = useCallback(assignmentId => {
+    setAssignments(prev => prev.map(a =>
+      a.id === assignmentId ? { ...a, status: "removed" } : a
+    ));
   }, []);
 
   const renderMain = () => {
@@ -3712,7 +3905,8 @@ function App() {
       return <DirectoryView subs={subs} onAdd={()=>setShowAdd(true)} onSelect={setSelected} />;
     }
     if (activeSection === "assignments") {
-      return <AssignmentsView assignments={assignments} subs={subs} jobs={jobs} onNew={()=>openAssign(null)} />;
+      return <AssignmentsView assignments={assignments} subs={subs} jobs={jobs} onNew={()=>openAssign(null)}
+        onNotify={a=>{ setNotifyTarget(a); setShowNotify(true); }} />;
     }
     if (activeSection === "spend") return <SpendView subs={subs} assignments={assignments} jobs={jobs} onViewSub={goToSub} expandedId={spendExpanded} setExpandedId={setSpendExpanded} />;
 
@@ -3744,7 +3938,8 @@ function App() {
       return <ScheduleView schedule={schedule} subs={subs} jobs={jobs} onNew={()=>openAssign(null)} />;
     }
     if (activeSection === "portal") {
-      return <SubPortalView subs={subs} assignments={assignments} jobs={jobs} />;
+      return <SubPortalView subs={subs} assignments={assignments} jobs={jobs}
+        onAccept={handleAcceptAssignment} onDecline={handleDeclineAssignment} />;
     }
     return null;
   };
@@ -3883,6 +4078,15 @@ function App() {
           subs={subs}
           onClose={()=>{ setShowCreatePo(false); setCreatePoTarget(null); }}
           onSave={handleSavePo}
+        />
+      )}
+      {showNotify && notifyTarget && (
+        <NotifySubDrawer
+          assignment={notifyTarget}
+          subs={subs}
+          jobs={jobs}
+          onClose={()=>{ setShowNotify(false); setNotifyTarget(null); }}
+          onSend={handleNotifySend}
         />
       )}
     </div>
