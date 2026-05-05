@@ -2533,19 +2533,6 @@ const ProjectFinancials = ({ project, assignments }) => {
 
   return (
     <div className="page-body">
-      {/* Callout */}
-      <div style={{background:"var(--bg-primary-subdued)", border:"1px solid var(--border-primary)", borderRadius:"var(--r-md)", padding:"14px 20px", marginBottom:20, display:"flex", gap:12, alignItems:"flex-start"}}>
-        <Ic n="reports" s={20}/>
-        <div>
-          <div style={{fontWeight:700, fontSize:13, marginBottom:4, color:"var(--text-primary)"}}>Sub Spend Is Properly Categorized in Job Costing</div>
-          <div style={{fontSize:13, lineHeight:1.6}}>
-            Subcontractor POs are tracked under <strong>Subcontractors</strong>, not Materials.
-            Without this module, <strong>{fmtDollar(subPaid + subPending)}</strong> in sub spend would inflate
-            the Materials line, skewing your BvA by up to {Math.round(((subPaid+subPending)/project.budget.materials)*100)}% on that category.
-          </div>
-        </div>
-      </div>
-
       <div className="card" style={{padding:0}}>
         <div style={{padding:"12px 20px", borderBottom:"1px solid var(--border-grey)", fontWeight:700, fontSize:13}}>
           Budget vs. Actual
