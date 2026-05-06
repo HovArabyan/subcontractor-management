@@ -420,6 +420,7 @@
       <div class="theme-summary" id="t2-summary">
         <div class="summary-pill"><div class="pill-dot pill-both"></div>Both support Job + Project assignment</div>
         <div class="summary-pill"><div class="pill-dot pill-st"></div>ST: dedicated Subcontractors tab + specialty filter at P0</div>
+        <div class="summary-pill"><div class="pill-dot pill-st"></div>ST: SA visits → jobs → sub assignment; BuildOps SA scheduling is internal-only</div>
         <div class="summary-pill"><div class="pill-dot pill-st"></div>ST P1: Project Plan Task assignment</div>
       </div>
       <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
@@ -454,6 +455,12 @@
               <td>✅ Cost Code + Cost Type + Project Phase per line</td>
               <td><span class="p0">P0</span> — Budget Codes on assignment and linked POs</td>
               <td class="adv-parity">Parity</td>
+            </tr>
+            <tr>
+              <td>Sub assignment on recurring / maintenance visits</td>
+              <td>🔶 SA scheduling (Step 4) assigns internal technicians only (Primary Technician, Additional Technicians, Crew); sub must be manually linked to the resulting job via the Subcontracts module — disconnected two-step workaround</td>
+              <td><span class="p0">P0</span> — SA visits book as Jobs; each Job gets the dedicated Subcontractors tab; sub assignment flows naturally from the SA visit creation</td>
+              <td class="adv-st">ST advantage — native end-to-end path from recurring visit → job → sub assignment; BuildOps has no equivalent integrated flow</td>
             </tr>
           </tbody>
         </table>
