@@ -203,7 +203,7 @@
     .topbar__breadcrumb .crumb-current { color: var(--text-default); font-weight: 600; }
     .topbar__actions { display: flex; gap: 8px; align-items: center; }
 
-    .page-body { flex: 1; overflow-y: auto; padding: 24px; }
+    .page-body { flex: 1; min-height: 0; overflow-y: auto; padding: 24px; }
 
     /* =====================================================
        BUTTONS
@@ -815,6 +815,12 @@ const Ic = ({ n, s = 16 }) => {
     portal:   "M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z",
     waiver:   "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z",
     calicon:  "M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z",
+    camera:   "M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm3.2-5c0 1.77-1.43 3.2-3.2 3.2-1.77 0-3.2-1.43-3.2-3.2 0-1.77 1.43-3.2 3.2-3.2 1.77 0 3.2 1.43 3.2 3.2z",
+    photo:    "M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z",
+    agreements:"M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-9-8h6v2H9zm0 4h6v2H9zm0-8h3v2H9z",
+    refresh:  "M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z",
+    book:     "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z",
+    jobs:     "M20 6h-2.18c.07-.44.18-.88.18-1 0-2.21-1.79-4-4-4s-4 1.79-4 4c0 .12.11.56.18 1H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-3c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm6 17H8V8h2v1h8V8h2v12z",
   };
   return (
     <svg viewBox="0 0 24 24" width={s} height={s} fill="currentColor" style={{flexShrink:0}}>
@@ -836,17 +842,21 @@ const SUBS_INIT = [
   { id:4, name:"ProLift Crane & Rigging",       type:"company",    contact:"Steve Navarro", email:"steve@prolift.com",            phone:"(623) 555-0094", trades:["Crane / Rigging"],     region:"Glendale, AZ",   coi:"expired",  w9:false, lic:"",             activeJobs:0, totalSpend:18750,  status:"inactive", notes:"COI expired 2/1. Do not assign until renewed." },
   { id:5, name:"Carlos Vega",                   type:"individual", contact:"Carlos Vega",   email:"cvega.plumb@gmail.com",        phone:"(480) 555-2210", trades:["Plumbing"],            region:"Tempe, AZ",      coi:"n/a",      w9:true,  lic:"AZ-PL-77341",  activeJobs:1, totalSpend:9400,   status:"active",   notes:"1099 solo plumber for overflow work." },
   { id:6, name:"Integrity Roofing Crew",        type:"company",    contact:"Angela Kim",    email:"a.kim@integrityroofing.com",   phone:"(602) 555-0651", trades:["Roofing"],             region:"Scottsdale, AZ", coi:"current",  w9:true,  lic:"AZ-ROO-30218", activeJobs:3, totalSpend:203000, status:"active",   notes:"" },
+  { id:7, name:"Northern Snow Services LLC",    type:"company",    contact:"Mike Kowalski", email:"mike@northernsnow.com",        phone:"(303) 555-7890", trades:["Snow Removal","Grounds"], region:"Denver, CO",     coi:"current",  w9:true,  lic:"CO-GC-77412",  activeJobs:2, totalSpend:70500,  status:"active",   notes:"Preferred snow & ice vendor for Denver and Midwest accounts. 24/7 on-call during season." },
 ];
 
 const TOTAL_SPEND = SUBS_INIT.reduce((a,s) => a + s.totalSpend, 0);
 
 const JOBS_INIT = [
-  { id:"J-1042", name:"Commercial Re-Roof – Mesa Walmart",           customer:"WM Facilities LLC",        type:"project", value:485000,   address:"2626 W McDowell Rd, Mesa, AZ" },
-  { id:"J-1038", name:"HVAC Replacement – Chandler Office Park",      customer:"Chandler RE Partners",     type:"project", value:220000,   address:"1700 W Chandler Blvd, Chandler, AZ" },
-  { id:"J-1055", name:"Main Panel Upgrade – Phoenix Warehouse",       customer:"Desert Logistics Inc",     type:"job",     value:38500,    address:"3901 E Van Buren St, Phoenix, AZ" },
-  { id:"J-1061", name:"Parking Lot Lighting – Scottsdale Mall",       customer:"Scottsdale Retail Group",  type:"job",     value:54000,    address:"7014 E Camelback Rd, Scottsdale, AZ" },
-  { id:"J-1048", name:"Emergency Generator Install – Banner Hospital", customer:"Banner Health",           type:"project", value:310000,   address:"1111 E McDowell Rd, Phoenix, AZ" },
-  { id:"J-1064", name:"Ground-Up Shell – Gilbert Industrial Park",    customer:"Gilbert Development Corp", type:"project", value:1250000,  address:"4400 S Gilbert Rd, Gilbert, AZ" },
+  { id:"J-1042", name:"Commercial Re-Roof – Mesa Walmart",           customer:"WM Facilities LLC",        type:"project", value:485000,  address:"2626 W McDowell Rd, Mesa, AZ",           jobType:"Commercial Roofing",       businessUnit:"Commercial Roofing",   status:"active" },
+  { id:"J-1038", name:"HVAC Replacement – Chandler Office Park",      customer:"Chandler RE Partners",     type:"project", value:220000,  address:"1700 W Chandler Blvd, Chandler, AZ",    jobType:"HVAC Installation",        businessUnit:"Commercial HVAC",      status:"active" },
+  { id:"J-1055", name:"Main Panel Upgrade – Phoenix Warehouse",       customer:"Desert Logistics Inc",     type:"job",     value:38500,   address:"3901 E Van Buren St, Phoenix, AZ",      jobType:"Electrical",               businessUnit:"Commercial Electrical", status:"completed" },
+  { id:"J-1061", name:"Parking Lot Lighting – Scottsdale Mall",       customer:"Scottsdale Retail Group",  type:"job",     value:54000,   address:"7014 E Camelback Rd, Scottsdale, AZ",   jobType:"Electrical",               businessUnit:"Commercial Electrical", status:"scheduled" },
+  { id:"J-1048", name:"Emergency Generator Install – Banner Hospital", customer:"Banner Health",           type:"project", value:310000,  address:"1111 E McDowell Rd, Phoenix, AZ",       jobType:"Electrical",               businessUnit:"Commercial Electrical", status:"active" },
+  { id:"J-1064", name:"Ground-Up Shell – Gilbert Industrial Park",    customer:"Gilbert Development Corp", type:"project", value:1250000, address:"4400 S Gilbert Rd, Gilbert, AZ",         jobType:"General Construction",     businessUnit:"Commercial Construction",status:"active" },
+  { id:"J-1068", name:"Snow Removal – Denver Tech Center I",          customer:"Denver Property Group",    type:"job",     value:8000,    address:"5613 DTC Pkwy, Greenwood Village, CO",   jobType:"Snow Removal",             businessUnit:"Snow / Grounds",       status:"active",    agreementId:"SA-50221", agreementName:"Snow & Ice Management – Denver Portfolio" },
+  { id:"J-1069", name:"Quarterly HVAC PM – Tower A",                  customer:"Mesa Commercial RE Partners",type:"job",   value:5600,    address:"1500 E University Dr, Mesa, AZ",         jobType:"HVAC Maintenance",         businessUnit:"HVAC Maintenance",     status:"active",    agreementId:"SA-50958", agreementName:"Quarterly HVAC PM – Mesa Office Park" },
+  { id:"J-1070", name:"Plumbing Repair – Scottsdale Office Complex",  customer:"SunState Properties",     type:"job",     value:4800,    address:"8900 E Pinnacle Peak Rd, Scottsdale, AZ",jobType:"Plumbing",                 businessUnit:"Service",              status:"scheduled" },
 ];
 
 const COST_CODES = [
@@ -1075,6 +1085,102 @@ const CoiBadge = ({s}) => {
 };
 
 /* ================================================================
+   AGREEMENTS DATA
+   ================================================================ */
+const AGREEMENTS_INIT = [
+  {
+    id:"SA-50221", name:"Snow & Ice Management – Denver Portfolio",
+    status:"active", customer:"Denver Property Group",
+    primaryLocation:"Denver Tech Center I – 5613 DTC Pkwy, Greenwood Village, CO",
+    locationCount:8, businessUnit:"Snow / Grounds",
+    summary:"Seasonal snow removal and ice management for 8 commercial properties. Includes plowing, salting, and 24/7 on-call response for any 2\"+ event.",
+    startDate:"10/01/2025", endDate:"04/30/2026", duration:"7 months",
+    totalPrice:48000, autoRenew:true, contacts:2, accountManager:"Jen Salazar",
+    preferredSubId:7,
+    visits:[
+      {id:1,name:"Snow & Ice – Per Event",recurrence:"Per Event",    windowStr:"10/01/2025 – 04/30/2026",location:"Denver Tech Center I",  jobId:"J-5501",jobType:"Snow Removal",procStatus:"None"},
+      {id:2,name:"Snow & Ice – Per Event",recurrence:"Per Event",    windowStr:"10/01/2025 – 04/30/2026",location:"Meridian Business Park", jobId:null,    jobType:"Snow Removal",procStatus:"None"},
+      {id:3,name:"Monthly Salt Application",recurrence:"Every 1 month",windowStr:"11/01/2025 – 03/31/2026",location:"All Locations",         jobId:null,    jobType:"Salt Application",procStatus:"None"},
+      {id:4,name:"Seasonal Inspection",    recurrence:"Every 1 year", windowStr:"09/15/2025 – 09/30/2025",location:"Denver Tech Center I",  jobId:"J-5488",jobType:"Site Inspection",procStatus:"None"},
+    ]
+  },
+  {
+    id:"SA-49880", name:"Winter Grounds Maintenance – Chicago Commons",
+    status:"active", customer:"Inland Real Estate Group",
+    primaryLocation:"Chicago Commons – 2400 N Western Ave, Chicago, IL",
+    locationCount:3, businessUnit:"Snow / Grounds",
+    summary:"Snow plowing, ice control, and walk clearing for mixed-use retail complex. 4-hour response SLA for any accumulation event.",
+    startDate:"11/01/2025", endDate:"03/31/2026", duration:"5 months",
+    totalPrice:35800, autoRenew:true, contacts:1, accountManager:"Jen Salazar",
+    preferredSubId:7,
+    visits:[
+      {id:1,name:"Winter Grounds – Monthly",recurrence:"Every 1 month",windowStr:"11/01/2025 – 11/30/2025",location:"Chicago Commons",jobId:"J-5482",jobType:"Snow Removal",procStatus:"None"},
+      {id:2,name:"Winter Grounds – Monthly",recurrence:"Every 1 month",windowStr:"12/01/2025 – 12/31/2025",location:"Chicago Commons",jobId:"J-5498",jobType:"Snow Removal",procStatus:"None"},
+      {id:3,name:"Winter Grounds – Monthly",recurrence:"Every 1 month",windowStr:"01/01/2026 – 01/31/2026",location:"Chicago Commons",jobId:null,    jobType:"Snow Removal",procStatus:"None"},
+      {id:4,name:"Winter Grounds – Monthly",recurrence:"Every 1 month",windowStr:"02/01/2026 – 02/28/2026",location:"Chicago Commons",jobId:null,    jobType:"Snow Removal",procStatus:"None"},
+    ]
+  },
+  {
+    id:"SA-49314", name:"Snow Removal Contract – Minneapolis Warehouse",
+    status:"active", customer:"Target Distribution LLC",
+    primaryLocation:"Target Distribution – 1000 Nicollet Mall, Minneapolis, MN",
+    locationCount:3, businessUnit:"Snow / Grounds",
+    summary:"Full-service snow removal including dock areas, parking lots, and pedestrian walkways. 2-inch accumulation trigger.",
+    startDate:"10/15/2025", endDate:"04/15/2026", duration:"6 months",
+    totalPrice:22500, autoRenew:false, contacts:2, accountManager:"—",
+    preferredSubId:7,
+    visits:[
+      {id:1,name:"Snow Removal – On-Call", recurrence:"As Needed",    windowStr:"10/15/2025 – 04/15/2026",location:"Minneapolis North",  jobId:"J-5455",jobType:"Snow Removal",procStatus:"None"},
+      {id:2,name:"Snow Removal – On-Call", recurrence:"As Needed",    windowStr:"10/15/2025 – 04/15/2026",location:"Minneapolis South",  jobId:null,    jobType:"Snow Removal",procStatus:"None"},
+      {id:3,name:"Pre-Season Walkthrough",recurrence:"Every 1 year",  windowStr:"10/01/2025 – 10/14/2025",location:"All Locations",      jobId:"J-5441",jobType:"Site Inspection",procStatus:"None"},
+    ]
+  },
+  {
+    id:"SA-50958", name:"Quarterly HVAC PM – Mesa Office Park",
+    status:"active", customer:"Mesa Commercial RE Partners",
+    primaryLocation:"Mesa Office Park – Tower A, 1200 S Alma School Rd, Mesa, AZ",
+    locationCount:2, businessUnit:"HVAC Maintenance",
+    summary:"Quarterly preventive maintenance for 24 RTU and split-system units across two towers.",
+    startDate:"01/01/2026", endDate:"12/31/2026", duration:"12 months",
+    totalPrice:22400, autoRenew:true, contacts:1, accountManager:"Kent Brooks",
+    preferredSubId:2,
+    visits:[
+      {id:1,name:"Quarterly HVAC PM",recurrence:"Every 3 months",windowStr:"01/01/2026 – 01/16/2026",location:"Tower A",jobId:"J-5510",jobType:"HVAC Maintenance",procStatus:"None"},
+      {id:2,name:"Quarterly HVAC PM",recurrence:"Every 3 months",windowStr:"04/01/2026 – 04/16/2026",location:"Tower A",jobId:null,    jobType:"HVAC Maintenance",procStatus:"None"},
+      {id:3,name:"Quarterly HVAC PM",recurrence:"Every 3 months",windowStr:"07/01/2026 – 07/16/2026",location:"Tower B",jobId:null,    jobType:"HVAC Maintenance",procStatus:"None"},
+      {id:4,name:"Quarterly HVAC PM",recurrence:"Every 3 months",windowStr:"10/01/2026 – 10/16/2026",location:"Tower B",jobId:null,    jobType:"HVAC Maintenance",procStatus:"None"},
+    ]
+  },
+  {
+    id:"SA-46370", name:"Los Angeles Unified School District Contract",
+    status:"active", customer:"Los Angeles Unified School District",
+    primaryLocation:"Eagle Rock High School – 1750 Yosemite Dr, Los Angeles, CA",
+    locationCount:2, businessUnit:"Commercial Maintenance",
+    summary:"Annual HVAC maintenance and repair services for district facilities across two campuses.",
+    startDate:"03/01/2026", endDate:"02/28/2027", duration:"12 months",
+    totalPrice:50000, autoRenew:true, contacts:3, accountManager:"—",
+    preferredSubId:1,
+    visits:[
+      {id:1,name:"Annual HVAC Inspection",    recurrence:"Every 1 year",  windowStr:"03/01/2026 – 03/16/2026",location:"Eagle Rock HS",        jobId:null,jobType:"HVAC Inspection",procStatus:"None"},
+      {id:2,name:"Semi-Annual Filter Change",  recurrence:"Every 6 months",windowStr:"03/01/2026 – 03/08/2026",location:"Luther Burbank MS",    jobId:null,jobType:"HVAC Maintenance",procStatus:"None"},
+    ]
+  },
+  {
+    id:"SA-46184", name:"Starbucks Commercial HVAC – Glendale",
+    status:"active", customer:"Starbucks",
+    primaryLocation:"Starbucks – Glendale, 224 N Brand Blvd, Glendale, CA",
+    locationCount:1, businessUnit:"HVAC Maintenance",
+    summary:"Recurring HVAC maintenance and priority repair response for single location.",
+    startDate:"02/01/2027", endDate:"01/31/2028", duration:"12 months",
+    totalPrice:10000, autoRenew:false, contacts:0, accountManager:"—",
+    preferredSubId:2,
+    visits:[
+      {id:1,name:"HVAC Maintenance Visit",recurrence:"Every 6 months",windowStr:"02/01/2027 – 02/16/2027",location:"Starbucks – Glendale",jobId:null,jobType:"HVAC Maintenance",procStatus:"None"},
+    ]
+  },
+];
+
+/* ================================================================
    ADD DRAWER
    ================================================================ */
 const AddDrawer = ({ onClose, onSave }) => {
@@ -1249,10 +1355,10 @@ const StatusBadge = ({ s }) => {
 /* ================================================================
    ASSIGN DRAWER
    ================================================================ */
-const AssignDrawer = ({ subs, jobs, assignments, onClose, onSave, preSelectedSub = null }) => {
+const AssignDrawer = ({ subs, jobs, assignments, onClose, onSave, preSelectedSub = null, preSelectedJob = null }) => {
   const [step, setStep]         = useState(1);
   const [selSub, setSelSub]     = useState(preSelectedSub);
-  const [selJob, setSelJob]     = useState(null);
+  const [selJob, setSelJob]     = useState(preSelectedJob);
   const [subQ, setSubQ]         = useState("");
   const [f, setF]               = useState({ scope:"", costCode:"", contractedAmt:"", status:"active" });
   const set = (k, v) => setF(p => ({ ...p, [k]: v }));
@@ -1336,32 +1442,48 @@ const AssignDrawer = ({ subs, jobs, assignments, onClose, onSave, preSelectedSub
               )}
             </div>
 
-            {/* Job selector */}
-            <div className="form-section">
-              <div className="form-section__title">Job / Project <span className="req">*</span></div>
-              <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                {jobs.map(j => {
-                  const alreadyAssigned = selSub && assignments.some(a => a.jobId===j.id && a.subId===selSub.id && a.status!=="removed" && a.status!=="completed");
-                  return (
-                    <div key={j.id} className={`pick-row ${selJob?.id===j.id?"selected":""}`}
-                      style={{borderRadius:"var(--r-md)",border:"1px solid var(--border-grey)"}}
-                      onClick={()=>setSelJob(j)}>
-                      <div style={{flex:1}}>
-                        <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-                          <span style={{fontWeight:600,fontSize:13}}>{j.name}</span>
-                          <span className={`badge ${j.type==="project"?"badge-info":"badge-neutral"}`} style={{fontSize:10}}>
-                            {j.type==="project"?"Project":"Job"}
-                          </span>
-                          {alreadyAssigned && <span className="badge badge-warning" style={{fontSize:10}}>Already assigned</span>}
-                        </div>
-                        <div style={{fontSize:12,color:"var(--text-subdued)",marginTop:2}}>{j.customer} · {fmtDollar(j.value)} contract value</div>
-                      </div>
-                      {selJob?.id===j.id && <Ic n="check" s={16}/>}
-                    </div>
-                  );
-                })}
+            {/* Job selector — hidden when a job/project is pre-selected from context */}
+            {preSelectedJob ? (
+              <div className="form-section">
+                <div className="form-section__title">Job / Project</div>
+                <div style={{background:"var(--bg-grey-subdued)",border:"1px solid var(--border-grey)",borderRadius:"var(--r-md)",padding:"12px 14px",display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{flex:1}}>
+                    <div style={{fontWeight:700,fontSize:13}}>{preSelectedJob.name}</div>
+                    <div style={{fontSize:12,color:"var(--text-subdued)",marginTop:2}}>{preSelectedJob.customer}</div>
+                  </div>
+                  <span className={`badge ${preSelectedJob.type==="project"?"badge-info":"badge-neutral"}`} style={{fontSize:10}}>
+                    {preSelectedJob.type==="project"?"Project":"Job"}
+                  </span>
+                  <Ic n="check" s={16} style={{color:"var(--success)"}}/>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="form-section">
+                <div className="form-section__title">Job / Project <span className="req">*</span></div>
+                <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                  {jobs.map(j => {
+                    const alreadyAssigned = selSub && assignments.some(a => a.jobId===j.id && a.subId===selSub.id && a.status!=="removed" && a.status!=="completed");
+                    return (
+                      <div key={j.id} className={`pick-row ${selJob?.id===j.id?"selected":""}`}
+                        style={{borderRadius:"var(--r-md)",border:"1px solid var(--border-grey)"}}
+                        onClick={()=>setSelJob(j)}>
+                        <div style={{flex:1}}>
+                          <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+                            <span style={{fontWeight:600,fontSize:13}}>{j.name}</span>
+                            <span className={`badge ${j.type==="project"?"badge-info":"badge-neutral"}`} style={{fontSize:10}}>
+                              {j.type==="project"?"Project":"Job"}
+                            </span>
+                            {alreadyAssigned && <span className="badge badge-warning" style={{fontSize:10}}>Already assigned</span>}
+                          </div>
+                          <div style={{fontSize:12,color:"var(--text-subdued)",marginTop:2}}>{j.customer} · {fmtDollar(j.value)} contract value</div>
+                        </div>
+                        {selJob?.id===j.id && <Ic n="check" s={16}/>}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </>}
 
           {step === 2 && <>
@@ -2589,7 +2711,7 @@ const ProjectFinancials = ({ project, assignments }) => {
 /* ================================================================
    PROJECT SUBCONTRACTORS TAB
    ================================================================ */
-const ProjectSubsTab = ({ project, subs, assignments, onAssign, onIssuePo }) => {
+const ProjectSubsTab = ({ project, subs, assignments, onAssign, onIssuePo, onNotify }) => {
   const projAssign = assignments
     .filter(a => a.jobId === project.id)
     .map(a => ({
@@ -2635,11 +2757,11 @@ const ProjectSubsTab = ({ project, subs, assignments, onAssign, onIssuePo }) => 
           <table style={{tableLayout:"fixed",width:"100%"}}>
             <thead>
               <tr>
-                <th style={{width:"24%"}}>Subcontractor</th>
-                <th style={{width:"20%"}}>Scope / Cost Code</th>
-                <th style={{width:"12%"}}>Status</th>
-                <th style={{width:"22%"}}>PO Spend</th>
-                <th style={{width:"22%"}}>Actions</th>
+                <th style={{width:"22%"}}>Subcontractor</th>
+                <th style={{width:"18%"}}>Scope / Cost Code</th>
+                <th style={{width:"11%"}}>Status</th>
+                <th style={{width:"20%"}}>PO Spend</th>
+                <th style={{width:"29%"}}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -2670,10 +2792,26 @@ const ProjectSubsTab = ({ project, subs, assignments, onAssign, onIssuePo }) => 
                     </div>
                   </td>
                   <td>
-                    <button className="btn btn-sm btn-secondary"
-                      onClick={e=>{ e.stopPropagation(); onIssuePo && onIssuePo(a); }}>
-                      + Issue PO
-                    </button>
+                    <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                      {a.status === "invited" ? (
+                        <div style={{display:"flex",flexDirection:"column",gap:3}}>
+                          <button className="btn btn-xs btn-secondary" onClick={e=>{ e.stopPropagation(); onNotify && onNotify(a); }}>
+                            <Ic n="mail" s={11}/> Resend
+                          </button>
+                          {a.notifiedAt && <div style={{fontSize:10,color:"var(--text-subdued)"}}>Sent {a.notifiedAt}</div>}
+                        </div>
+                      ) : a.status === "active" && !a.notifiedAt ? (
+                        <button className="btn btn-xs btn-primary" onClick={e=>{ e.stopPropagation(); onNotify && onNotify(a); }}>
+                          <Ic n="mail" s={11}/> Notify Sub
+                        </button>
+                      ) : a.notifiedAt ? (
+                        <span style={{fontSize:10,color:"var(--text-subdued)"}}>Notified {a.notifiedAt}</span>
+                      ) : null}
+                      <button className="btn btn-sm btn-secondary"
+                        onClick={e=>{ e.stopPropagation(); onIssuePo && onIssuePo(a); }}>
+                        + Issue PO
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -3530,11 +3668,179 @@ const ScheduleView = ({schedule, subs, jobs, onNew}) => {
 };
 
 /* ================================================================
+   PORTAL JOB DETAIL — sub's view of a single job
+   ================================================================ */
+const PortalJobDetail = ({ assignment, job, sub, onBack }) => {
+  const today = "May 7, 2026";
+  const PHOTO_COLORS = ["#E8D5B7","#B7D5E8","#D5E8B7","#E8B7D5","#D5D5E8","#E8E8B7"];
+
+  const [photos, setPhotos] = useState([
+    { id:1, label:"Roof deck inspection",      color:"#E8D5B7", timestamp:"7:42 AM" },
+    { id:2, label:"TPO membrane roll-out",     color:"#B7D5E8", timestamp:"9:15 AM" },
+  ]);
+  const [checklist, setChecklist] = useState([
+    { id:1, label:"Safety briefing completed with crew",             checked:true  },
+    { id:2, label:"Site access confirmed with GC superintendent",    checked:true  },
+    { id:3, label:"Materials staged and verified on site",           checked:true  },
+    { id:4, label:"Work area barricaded / fall protection in place", checked:false },
+    { id:5, label:"Today's tasks reviewed and assigned to crew",     checked:false },
+    { id:6, label:"Site cleaned up at end of shift",                 checked:false },
+  ]);
+  const [note,      setNote]      = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const toggle   = id => setChecklist(p => p.map(c => c.id===id ? {...c, checked:!c.checked} : c));
+  const addPhoto = label => setPhotos(p => [...p, {
+    id: Date.now(), label: label || `Site photo ${p.length+1}`,
+    color: PHOTO_COLORS[p.length % PHOTO_COLORS.length],
+    timestamp: new Date().toLocaleTimeString("en-US", {hour:"numeric", minute:"2-digit"}),
+  }]);
+
+  const checked    = checklist.filter(c=>c.checked).length;
+  const paidAmt    = assignment.pos.filter(p=>p.status==="paid").reduce((t,p)=>t+p.amt,0);
+
+  if (submitted) return (
+    <div style={{padding:"48px 28px", textAlign:"center"}}>
+      <div style={{fontSize:52, marginBottom:16}}>✅</div>
+      <div style={{fontSize:18, fontWeight:800, marginBottom:8}}>Daily Update Submitted</div>
+      <div style={{fontSize:13, color:"var(--text-subdued)", lineHeight:1.65, maxWidth:340, margin:"0 auto 24px"}}>
+        Your progress report for <strong>{today}</strong> has been sent to the project manager.
+      </div>
+      <button className="btn btn-md btn-primary" onClick={onBack}>← Back to My Jobs</button>
+    </div>
+  );
+
+  return (
+    <div>
+      {/* Job header */}
+      <div style={{background:"var(--bg-white)", borderBottom:"1px solid var(--border-grey)", padding:"14px 28px"}}>
+        <button onClick={onBack} style={{background:"none", border:"none", cursor:"pointer", color:"var(--text-primary)", fontSize:13, fontWeight:700, display:"inline-flex", alignItems:"center", gap:5, marginBottom:10, padding:0}}>
+          ← Back to My Jobs
+        </button>
+        <div style={{display:"flex", alignItems:"flex-start", justifyContent:"space-between", flexWrap:"wrap", gap:10}}>
+          <div>
+            <div style={{fontSize:17, fontWeight:800}}>{job?.name || assignment.jobId}</div>
+            <div style={{fontSize:12, color:"var(--text-subdued)", marginTop:3, display:"flex", gap:10, flexWrap:"wrap"}}>
+              <span>{job?.address}</span>
+              {assignment.costCode && <><span>·</span><span>{assignment.costCode}</span></>}
+            </div>
+          </div>
+          <span className="badge badge-success">Active</span>
+        </div>
+      </div>
+
+      <div style={{padding:"20px 28px", display:"flex", flexDirection:"column", gap:16}}>
+
+        {/* Scope of Work */}
+        <div style={{background:"var(--bg-white)", border:"1px solid var(--border-grey)", borderRadius:"var(--r-md)", padding:"16px 20px"}}>
+          <div style={{fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.5px", color:"var(--text-subdued)", marginBottom:8}}>Your Scope of Work</div>
+          <div style={{fontSize:13, lineHeight:1.65}}>{assignment.scope}</div>
+          <div style={{marginTop:14, display:"flex", gap:28, borderTop:"1px solid var(--border-grey)", paddingTop:12}}>
+            {[
+              {l:"Contracted Amount", v:fmtDollar(assignment.contractedAmt)},
+              {l:"Paid to Date",      v:fmtDollar(paidAmt), color:"var(--success)"},
+            ].map(s=>(
+              <div key={s.l}>
+                <div style={{fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.5px", color:"var(--text-subdued)", marginBottom:2}}>{s.l}</div>
+                <div style={{fontWeight:700, fontSize:14, color:s.color||"var(--text-default)"}}>{s.v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Daily Progress Report */}
+        <div style={{background:"var(--bg-white)", border:"2px solid var(--border-primary)", borderRadius:"var(--r-md)", padding:"16px 20px"}}>
+          <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16}}>
+            <div>
+              <div style={{fontWeight:800, fontSize:15}}>Daily Progress Report</div>
+              <div style={{fontSize:12, color:"var(--text-subdued)", marginTop:2}}>{today}</div>
+            </div>
+            <div style={{fontSize:12, color:checked===checklist.length?"var(--success)":"var(--text-subdued)", fontWeight:600}}>
+              {checked}/{checklist.length} items complete
+            </div>
+          </div>
+
+          {/* Daily checklist */}
+          <div style={{marginBottom:18}}>
+            <div style={{fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.5px", color:"var(--text-subdued)", marginBottom:8}}>Daily Checklist</div>
+            <div style={{display:"flex", flexDirection:"column", gap:6}}>
+              {checklist.map(c=>(
+                <label key={c.id} style={{display:"flex", alignItems:"center", gap:10, cursor:"pointer", padding:"9px 12px", borderRadius:"var(--r-sm)", background:c.checked?"#F0FFF8":"var(--bg-grey-subdued)", border:`1px solid ${c.checked?"#A3E6C8":"var(--border-grey)"}`, transition:"background 0.12s"}}>
+                  <input type="checkbox" checked={c.checked} onChange={()=>toggle(c.id)}
+                    style={{width:16, height:16, accentColor:"var(--success)", cursor:"pointer", flexShrink:0}}/>
+                  <span style={{fontSize:13, fontWeight:c.checked?600:400, color:c.checked?"var(--success)":"var(--text-default)"}}>{c.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Notes */}
+          <div style={{marginBottom:18}}>
+            <div style={{fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.5px", color:"var(--text-subdued)", marginBottom:6}}>Notes for Today</div>
+            <textarea className="form-textarea" rows={3}
+              placeholder="Describe work completed today, issues encountered, materials used, crew notes…"
+              value={note} onChange={e=>setNote(e.target.value)}/>
+          </div>
+
+          {/* Photos */}
+          <div style={{marginBottom:18}}>
+            <div style={{fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.5px", color:"var(--text-subdued)", marginBottom:8}}>
+              Site Photos <span style={{fontWeight:400, textTransform:"none", letterSpacing:"normal", fontSize:11}}>({photos.length} attached)</span>
+            </div>
+            <div style={{display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(108px, 1fr))", gap:8, marginBottom:10}}>
+              {photos.map(p=>(
+                <div key={p.id} style={{borderRadius:"var(--r-sm)", overflow:"hidden", border:"1px solid var(--border-grey)"}}>
+                  <div style={{background:p.color, height:78, display:"flex", alignItems:"center", justifyContent:"center"}}>
+                    <Ic n="photo" s={22} style={{opacity:0.25}}/>
+                  </div>
+                  <div style={{padding:"4px 7px", background:"white"}}>
+                    <div style={{fontSize:10, fontWeight:600, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", color:"var(--text-default)"}}>{p.label}</div>
+                    <div style={{fontSize:9, color:"var(--text-subdued)"}}>{p.timestamp}</div>
+                  </div>
+                </div>
+              ))}
+              <div onClick={()=>addPhoto()} style={{borderRadius:"var(--r-sm)", border:"2px dashed var(--border-grey)", height:108, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:4, cursor:"pointer", color:"var(--text-subdued)", transition:"all 0.12s"}}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--border-primary)";e.currentTarget.style.color="var(--text-primary)";}}
+                onMouseLeave={e=>{e.currentTarget.style.borderColor="var(--border-grey)";e.currentTarget.style.color="var(--text-subdued)";}}>
+                <Ic n="add" s={20}/>
+                <span style={{fontSize:10, fontWeight:700}}>Add Photo</span>
+              </div>
+            </div>
+            <div style={{display:"flex", gap:8}}>
+              <button className="btn btn-sm btn-secondary" onClick={()=>addPhoto("Camera capture")}>
+                <Ic n="camera" s={13}/> Take Photo
+              </button>
+              <button className="btn btn-sm btn-secondary" onClick={()=>addPhoto("Uploaded photo")}>
+                <Ic n="upload" s={13}/> Upload Photo
+              </button>
+            </div>
+          </div>
+
+          {/* Submit */}
+          <div style={{borderTop:"1px solid var(--border-grey)", paddingTop:16, display:"flex", alignItems:"center", justifyContent:"space-between", gap:12, flexWrap:"wrap"}}>
+            <div style={{fontSize:12, color:"var(--text-subdued)"}}>
+              {checked === checklist.length
+                ? <span style={{color:"var(--success)", fontWeight:600}}>✓ All checklist items complete</span>
+                : <span>{checklist.length - checked} checklist item{checklist.length-checked!==1?"s":""} remaining</span>}
+            </div>
+            <button className="btn btn-md btn-primary" onClick={()=>setSubmitted(true)}>
+              Submit Daily Update
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
    FEATURE 8 — SUB PORTAL PREVIEW
    ================================================================ */
 const SubPortalView = ({subs, assignments, jobs, onAccept, onDecline}) => {
   const activeSubs = subs.filter(s=>s.status==="active");
   const [selSubId, setSelSubId] = useState(activeSubs[0]?.id||null);
+  const [portalJob, setPortalJob] = useState(null);
   const sub = subs.find(s=>s.id===selSubId);
   const myAssign   = assignments.filter(a=>a.subId===selSubId&&a.status==="active");
   const myInvited  = assignments.filter(a=>a.subId===selSubId&&a.status==="invited");
@@ -3542,13 +3848,13 @@ const SubPortalView = ({subs, assignments, jobs, onAccept, onDecline}) => {
     .reduce((t,a)=>t+a.pos.filter(p=>p.status==="paid").reduce((s,p)=>s+p.amt,0),0);
 
   return (
-    <div>
+    <div style={{display:"flex",flexDirection:"column",flex:1,minHeight:0}}>
       <div className="topbar">
         <span className="topbar__title">Sub Portal Preview</span>
         <div className="topbar__actions">
           <select className="form-input" style={{width:260,fontSize:13}}
             value={selSubId||""}
-            onChange={e=>setSelSubId(parseInt(e.target.value))}>
+            onChange={e=>{ setSelSubId(parseInt(e.target.value)); setPortalJob(null); }}>
             {activeSubs.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
           <button className="btn btn-md btn-secondary"><Ic n="portal" s={14}/> Send Portal Link</button>
@@ -3579,6 +3885,16 @@ const SubPortalView = ({subs, assignments, jobs, onAccept, onDecline}) => {
               </div>
             </div>
           </div>
+
+          {/* Conditional: job detail OR dashboard */}
+          {portalJob ? (
+            <PortalJobDetail
+              assignment={portalJob}
+              job={jobs.find(j=>j.id===portalJob.jobId)}
+              sub={sub}
+              onBack={()=>setPortalJob(null)}
+            />
+          ) : (<>
 
           {/* Welcome strip */}
           <div style={{background:"var(--bg-primary-subdued)",borderBottom:"1px solid var(--border-grey)",padding:"14px 28px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
@@ -3647,7 +3963,10 @@ const SubPortalView = ({subs, assignments, jobs, onAccept, onDecline}) => {
                   const paid=a.pos.filter(p=>p.status==="paid").reduce((t,p)=>t+p.amt,0);
                   const pending=a.pos.filter(p=>p.status!=="paid").reduce((t,p)=>t+p.amt,0);
                   return (
-                    <div key={a.id} className="portal-job-card">
+                    <div key={a.id} className="portal-job-card" style={{cursor:"pointer",transition:"box-shadow 0.12s"}}
+                      onClick={()=>setPortalJob(a)}
+                      onMouseEnter={e=>e.currentTarget.style.boxShadow="0 2px 12px rgba(2,101,220,0.12)"}
+                      onMouseLeave={e=>e.currentTarget.style.boxShadow=""}>
                       <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:10}}>
                         <div>
                           <div style={{fontWeight:700,fontSize:14}}>{job?.name||a.jobId}</div>
@@ -3659,17 +3978,22 @@ const SubPortalView = ({subs, assignments, jobs, onAccept, onDecline}) => {
                         <span style={{fontSize:11,fontWeight:700,color:"var(--text-subdued)",textTransform:"uppercase",display:"block",marginBottom:3}}>Your Scope</span>
                         {a.scope}
                       </div>
-                      <div style={{display:"flex",gap:24}}>
-                        {[
-                          {l:"Contracted",   v:fmtDollar(a.contractedAmt),         color:undefined},
-                          {l:"Paid to Date", v:fmtDollar(paid),                    color:"var(--success)"},
-                          {l:"Pending",      v:pending>0?fmtDollar(pending):"—",   color:pending>0?"var(--warning-text)":undefined},
-                        ].map(s=>(
-                          <div key={s.l}>
-                            <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.5px",color:"var(--text-subdued)"}}>{s.l}</div>
-                            <div style={{fontWeight:700,fontSize:14,color:s.color||"var(--text-default)"}}>{s.v}</div>
-                          </div>
-                        ))}
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                        <div style={{display:"flex",gap:24}}>
+                          {[
+                            {l:"Contracted",   v:fmtDollar(a.contractedAmt),         color:undefined},
+                            {l:"Paid to Date", v:fmtDollar(paid),                    color:"var(--success)"},
+                            {l:"Pending",      v:pending>0?fmtDollar(pending):"—",   color:pending>0?"var(--warning-text)":undefined},
+                          ].map(s=>(
+                            <div key={s.l}>
+                              <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.5px",color:"var(--text-subdued)"}}>{s.l}</div>
+                              <div style={{fontWeight:700,fontSize:14,color:s.color||"var(--text-default)"}}>{s.v}</div>
+                            </div>
+                          ))}
+                        </div>
+                        <span style={{fontSize:12,fontWeight:700,color:"var(--text-primary)",display:"flex",alignItems:"center",gap:4}}>
+                          View Job &amp; Submit Update <Ic n="chev" s={13}/>
+                        </span>
                       </div>
                     </div>
                   );
@@ -3706,6 +4030,742 @@ const SubPortalView = ({subs, assignments, jobs, onAccept, onDecline}) => {
               Powered by ServiceTitan
             </span>
           </div>
+
+          </>)}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   JOBS LIST VIEW
+   ================================================================ */
+const JobsListView = ({ jobs, assignments, subs, onSelect }) => {
+  const jobOnlyList = jobs.filter(j => j.type === "job");
+  const getSubCount = (jobId) => assignments.filter(a => a.jobId === jobId && a.status !== "removed").length;
+  const statusColor = s => s==="active"?"var(--success)":s==="scheduled"?"var(--text-primary)":s==="completed"?"var(--text-muted)":"var(--warning-text)";
+
+  return (
+    <div>
+      <div className="topbar">
+        <span className="topbar__title">Jobs</span>
+        <div className="topbar__actions">
+          <button className="btn btn-md btn-primary"><Ic n="add" s={16}/> New Job</button>
+        </div>
+      </div>
+      <div className="page-body">
+        <div className="stats-row-4" style={{marginBottom:20}}>
+          {[
+            {l:"Total Jobs",    v:jobOnlyList.length},
+            {l:"Active",        v:jobOnlyList.filter(j=>j.status==="active").length},
+            {l:"Scheduled",     v:jobOnlyList.filter(j=>j.status==="scheduled").length},
+            {l:"Completed",     v:jobOnlyList.filter(j=>j.status==="completed").length},
+          ].map(s=>(
+            <div key={s.l} className="stat-card">
+              <div className="stat-card__label">{s.l}</div>
+              <div className="stat-card__value">{s.v}</div>
+            </div>
+          ))}
+        </div>
+        <div className="card" style={{padding:0}}>
+          <table style={{tableLayout:"fixed",width:"100%"}}>
+            <thead>
+              <tr>
+                <th style={{width:"8%"}}>Job #</th>
+                <th style={{width:"28%"}}>Job Name</th>
+                <th style={{width:"18%"}}>Customer</th>
+                <th style={{width:"16%"}}>Job Type</th>
+                <th style={{width:"10%"}}>Status</th>
+                <th style={{width:"10%"}}>Value</th>
+                <th style={{width:"10%"}}>Sub Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {jobOnlyList.map(j => {
+                const subCount = getSubCount(j.id);
+                return (
+                  <tr key={j.id} style={{cursor:"pointer"}} onClick={()=>onSelect(j)}>
+                    <td style={{fontWeight:700,color:"var(--text-primary)",fontSize:13}}>{j.id}</td>
+                    <td>
+                      <div style={{fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{j.name}</div>
+                      <div style={{fontSize:11,color:"var(--text-subdued)",marginTop:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{j.address}</div>
+                    </td>
+                    <td style={{fontSize:13}}>{j.customer}</td>
+                    <td style={{fontSize:13,color:"var(--text-subdued)"}}>{j.jobType||"—"}</td>
+                    <td>
+                      <span style={{display:"inline-flex",alignItems:"center",gap:5,fontSize:12,fontWeight:700,color:statusColor(j.status)}}>
+                        <span style={{width:7,height:7,borderRadius:"50%",background:statusColor(j.status),display:"inline-block"}}/>
+                        {j.status ? j.status.charAt(0).toUpperCase()+j.status.slice(1) : "—"}
+                      </span>
+                    </td>
+                    <td style={{fontWeight:700,fontSize:13}}>{j.value>0?fmtDollar(j.value):"—"}</td>
+                    <td>
+                      <span style={{display:"inline-flex",alignItems:"center",gap:5,fontSize:13}}>
+                        <Ic n="subs" s={13}/> {subCount}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          {jobOnlyList.length === 0 && (
+            <div style={{padding:48,textAlign:"center",color:"var(--text-subdued)"}}>No jobs found</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   JOB DETAIL VIEW
+   ================================================================ */
+const JobDetailView = ({ job, assignments, subs, onBack, onAssign, onIssuePo, onNotify }) => {
+  const [tab, setTab] = useState("subcontractors");
+
+  const jobAssign = assignments
+    .filter(a => a.jobId === job.id)
+    .map(a => ({
+      ...a,
+      sub:       subs.find(s => s.id === a.subId),
+      poPaid:    a.pos.filter(p=>p.status==="paid").reduce((t,p)=>t+p.amt,0),
+      poPending: a.pos.filter(p=>p.status!=="paid").reduce((t,p)=>t+p.amt,0),
+    }))
+    .filter(a => a.sub);
+
+  const totContracted = jobAssign.reduce((t,a)=>t+a.contractedAmt,0);
+  const totPaid       = jobAssign.reduce((t,a)=>t+a.poPaid,0);
+  const totPending    = jobAssign.reduce((t,a)=>t+a.poPending,0);
+
+  const statusColor = s => s==="active"?"var(--success)":s==="scheduled"?"#2563EB":s==="completed"?"var(--text-muted)":"var(--warning-text)";
+
+  const JOB_TABS = [
+    {id:"overview",        label:"Overview"},
+    {id:"subcontractors",  label:"Subcontractors"},
+    {id:"purchasing",      label:"Purchasing"},
+    {id:"notes",           label:"Notes"},
+  ];
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",flex:1,overflow:"hidden"}}>
+      {/* Job header */}
+      <div style={{background:"white",borderBottom:"1px solid var(--border-grey)",padding:"14px 28px",flexShrink:0}}>
+        {/* Breadcrumb */}
+        <div style={{display:"flex",alignItems:"center",gap:6,fontSize:12,color:"var(--text-subdued)",marginBottom:10}}>
+          <span style={{cursor:"pointer",color:"var(--text-primary)",fontWeight:600}} onClick={onBack}>Jobs</span>
+          <Ic n="chev" s={12}/>
+          <span style={{color:"var(--text-subdued)"}}>{job.id}</span>
+        </div>
+        <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:12}}>
+          <div>
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
+              <span style={{fontSize:11,fontWeight:700,color:"var(--text-subdued)"}}>{job.id}</span>
+              <span style={{display:"inline-flex",alignItems:"center",gap:5,fontSize:12,fontWeight:700,color:statusColor(job.status)}}>
+                <span style={{width:8,height:8,borderRadius:"50%",background:statusColor(job.status),display:"inline-block"}}/>
+                {job.status ? job.status.charAt(0).toUpperCase()+job.status.slice(1) : "Active"}
+              </span>
+            </div>
+            <div style={{fontSize:19,fontWeight:800}}>{job.name}</div>
+          </div>
+          <div style={{display:"flex",gap:8,paddingTop:4}}>
+            <button className="btn btn-sm btn-secondary">Edit</button>
+            <button className="btn btn-sm btn-primary">Actions ▾</button>
+          </div>
+        </div>
+        <div style={{display:"flex",gap:24,flexWrap:"wrap",fontSize:12}}>
+          {[
+            {k:"Customer",        v:<span style={{color:"var(--text-link)",fontWeight:600}}>{job.customer}</span>},
+            {k:"Service Address", v:job.address},
+            {k:"Job Type",        v:job.jobType||"—"},
+            {k:"Business Unit",   v:job.businessUnit||"—"},
+            ...(job.agreementName ? [{k:"Agreement", v:<span style={{color:"var(--text-link)"}}>{job.agreementName}</span>}] : []),
+            {k:"Job Value",       v:job.value>0?fmtDollar(job.value):"TBD"},
+          ].map(x=>(
+            <div key={x.k}>
+              <div style={{fontWeight:700,fontSize:11,color:"var(--text-subdued)",textTransform:"uppercase",letterSpacing:"0.4px",marginBottom:2}}>{x.k}</div>
+              <div style={{fontSize:13,fontWeight:500}}>{x.v}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div style={{display:"flex",borderBottom:"1px solid var(--border-grey)",background:"white",padding:"0 28px",flexShrink:0}}>
+        {JOB_TABS.map(t=>(
+          <div key={t.id}
+            style={{padding:"10px 16px",fontSize:13,fontWeight:tab===t.id?700:500,cursor:"pointer",
+              color:tab===t.id?"var(--text-primary)":"var(--text-subdued)",
+              borderBottom:tab===t.id?"2px solid var(--border-primary)":"2px solid transparent",marginBottom:-1}}
+            onClick={()=>setTab(t.id)}>
+            {t.label}
+            {t.id==="subcontractors" && jobAssign.length>0 &&
+              <span style={{marginLeft:6,background:"var(--bg-primary)",color:"white",borderRadius:"var(--r-full)",padding:"1px 7px",fontSize:11,fontWeight:700}}>{jobAssign.length}</span>
+            }
+          </div>
+        ))}
+      </div>
+
+      {/* Tab content */}
+      <div style={{flex:1,overflowY:"auto"}}>
+        {tab === "overview" && (
+          <div className="page-body">
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
+              <div className="card" style={{padding:20}}>
+                <div style={{fontWeight:700,fontSize:13,marginBottom:12}}>Job Details</div>
+                {[
+                  {k:"Job Number",  v:job.id},
+                  {k:"Customer",    v:job.customer},
+                  {k:"Address",     v:job.address},
+                  {k:"Job Type",    v:job.jobType||"—"},
+                  {k:"Business Unit",v:job.businessUnit||"—"},
+                  {k:"Status",      v:job.status||"—"},
+                ].map(x=>(
+                  <div key={x.k} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:"1px solid var(--border-grey)",fontSize:13}}>
+                    <span style={{color:"var(--text-subdued)",fontWeight:600}}>{x.k}</span>
+                    <span style={{fontWeight:500,textAlign:"right"}}>{x.v}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="card" style={{padding:20}}>
+                <div style={{fontWeight:700,fontSize:13,marginBottom:12}}>Sub Spend Summary</div>
+                {[
+                  {k:"Subs on Job",      v:jobAssign.length},
+                  {k:"Total Contracted", v:totContracted>0?fmtDollar(totContracted):"—"},
+                  {k:"PO Paid",          v:totPaid>0?fmtDollar(totPaid):"—",    style:{color:"var(--success)"}},
+                  {k:"PO Pending",       v:totPending>0?fmtDollar(totPending):"—", style:{color:"var(--warning-text)"}},
+                ].map(x=>(
+                  <div key={x.k} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:"1px solid var(--border-grey)",fontSize:13}}>
+                    <span style={{color:"var(--text-subdued)",fontWeight:600}}>{x.k}</span>
+                    <span style={{fontWeight:700,...(x.style||{})}}>{x.v}</span>
+                  </div>
+                ))}
+                {job.agreementName && (
+                  <div style={{marginTop:12,padding:"8px 10px",background:"var(--bg-primary-subdued)",borderRadius:"var(--r-sm)",fontSize:12}}>
+                    <div style={{fontWeight:700,color:"var(--text-primary)",marginBottom:2}}>Linked Agreement</div>
+                    <div style={{color:"var(--text-subdued)"}}>{job.agreementName}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {tab === "subcontractors" && (
+          <div className="page-body">
+            <div className="stats-row-4" style={{marginBottom:16}}>
+              {[
+                {l:"Subs on Job",     v:jobAssign.length},
+                {l:"Total Contracted",v:fmtDollar(totContracted)},
+                {l:"PO Paid",         v:fmtDollar(totPaid),    style:{color:"var(--success)"}},
+                {l:"PO Pending",      v:fmtDollar(totPending), style:{color:totPending>0?"var(--warning-text)":"var(--text-default)"}},
+              ].map(s=>(
+                <div key={s.l} className="stat-card">
+                  <div className="stat-card__label">{s.l}</div>
+                  <div className="stat-card__value" style={s.style}>{s.v}</div>
+                </div>
+              ))}
+            </div>
+            {jobAssign.length === 0 ? (
+              <div className="card" style={{padding:48,textAlign:"center"}}>
+                <div style={{fontSize:15,fontWeight:700,marginBottom:8}}>No Subcontractors on This Job</div>
+                <div style={{fontSize:13,color:"var(--text-subdued)",marginBottom:20}}>Assign a subcontractor to track their scope, POs, and spend on this job.</div>
+                <button className="btn btn-md btn-primary" onClick={onAssign}><Ic n="add" s={16}/> Assign Subcontractor</button>
+              </div>
+            ) : (
+              <div className="card" style={{padding:0}}>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 20px",borderBottom:"1px solid var(--border-grey)"}}>
+                  <span style={{fontWeight:700,fontSize:13}}>Subcontractor Roster</span>
+                  <button className="btn btn-sm btn-primary" onClick={onAssign}><Ic n="add" s={14}/> Assign Sub</button>
+                </div>
+                <table style={{tableLayout:"fixed",width:"100%"}}>
+                  <thead>
+                    <tr>
+                      <th style={{width:"22%"}}>Subcontractor</th>
+                      <th style={{width:"18%"}}>Scope / Cost Code</th>
+                      <th style={{width:"11%"}}>Status</th>
+                      <th style={{width:"20%"}}>PO Spend</th>
+                      <th style={{width:"29%"}}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {jobAssign.map(a=>(
+                      <tr key={a.id} style={{cursor:"default"}}>
+                        <td>
+                          <div style={{display:"flex",alignItems:"center",gap:10}}>
+                            <div className="avatar avatar-sm">{initials(a.sub.name)}</div>
+                            <div style={{minWidth:0}}>
+                              <div className="td-link" style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{a.sub.name}</div>
+                              <div className="td-sub">{a.sub.trades[0]}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div style={{fontSize:12,color:"var(--text-subdued)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}} title={a.scope}>{a.scope||"—"}</div>
+                          {a.costCode && <div style={{fontSize:11,color:"var(--text-muted)",marginTop:2}}>{a.costCode}</div>}
+                        </td>
+                        <td><StatusBadge s={a.status}/></td>
+                        <td>
+                          <div style={{fontSize:12}}>
+                            <span style={{color:"var(--text-subdued)"}}>Contracted: </span>
+                            <span style={{fontWeight:700}}>{a.contractedAmt>0?fmtDollar(a.contractedAmt):"—"}</span>
+                          </div>
+                          <div style={{fontSize:12,marginTop:2,display:"flex",gap:8}}>
+                            <span style={{color:"var(--success)",fontWeight:600}}>{a.poPaid>0?`Paid ${fmtDollar(a.poPaid)}`:"No POs paid"}</span>
+                            {a.poPending>0 && <span style={{color:"var(--warning-text)",fontWeight:600}}>· {fmtDollar(a.poPending)} pending</span>}
+                          </div>
+                        </td>
+                        <td>
+                          <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                            {a.status === "invited" ? (
+                              <div style={{display:"flex",flexDirection:"column",gap:3}}>
+                                <button className="btn btn-xs btn-secondary" onClick={e=>{ e.stopPropagation(); onNotify && onNotify(a); }}>
+                                  <Ic n="mail" s={11}/> Resend
+                                </button>
+                                {a.notifiedAt && <div style={{fontSize:10,color:"var(--text-subdued)"}}>Sent {a.notifiedAt}</div>}
+                              </div>
+                            ) : a.status === "active" && !a.notifiedAt ? (
+                              <button className="btn btn-xs btn-primary" onClick={e=>{ e.stopPropagation(); onNotify && onNotify(a); }}>
+                                <Ic n="mail" s={11}/> Notify Sub
+                              </button>
+                            ) : a.notifiedAt ? (
+                              <span style={{fontSize:10,color:"var(--text-subdued)"}}>Notified {a.notifiedAt}</span>
+                            ) : null}
+                            <button className="btn btn-sm btn-secondary"
+                              onClick={e=>{ e.stopPropagation(); onIssuePo && onIssuePo(a); }}>
+                              + Issue PO
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {tab === "purchasing" && (
+          <div className="page-body">
+            <div className="card" style={{padding:48,textAlign:"center",color:"var(--text-subdued)"}}>
+              <Ic n="dollar" s={32}/>
+              <div style={{fontSize:15,fontWeight:700,marginTop:12,marginBottom:8,color:"var(--text-default)"}}>Purchasing</div>
+              <div style={{fontSize:13}}>POs and invoices for this job will appear here.</div>
+            </div>
+          </div>
+        )}
+
+        {tab === "notes" && (
+          <div className="page-body">
+            <div className="card" style={{padding:48,textAlign:"center",color:"var(--text-subdued)"}}>
+              <div style={{fontSize:15,fontWeight:700,marginTop:12,marginBottom:8,color:"var(--text-default)"}}>Notes</div>
+              <div style={{fontSize:13}}>Internal notes for this job will appear here.</div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   AGREEMENTS LIST VIEW
+   ================================================================ */
+const AgreementsListView = ({ agreements, subs, onSelect }) => {
+  const [search, setSearch] = useState("");
+  const filtered = agreements.filter(a =>
+    a.name.toLowerCase().includes(search.toLowerCase()) ||
+    a.customer.toLowerCase().includes(search.toLowerCase())
+  );
+  return (
+    <div style={{display:"flex",flexDirection:"column",flex:1,minHeight:0}}>
+      <div className="topbar">
+        <span className="topbar__title">Service Agreements</span>
+        <div className="topbar__actions">
+          <button className="btn btn-md btn-secondary">Export</button>
+          <button className="btn btn-md btn-primary"><Ic n="add" s={16}/> New Agreement</button>
+        </div>
+      </div>
+      <div className="page-body">
+        {/* Filter bar */}
+        <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:16,alignItems:"center"}}>
+          {["Status","Customer","Business Unit","Start Date","End Date","Total Agreement Price","Account Manager","Auto-renew Status"].map(f=>(
+            <button key={f} className="filter-chip" style={{fontSize:12}}>{f} <Ic n="chev" s={11}/></button>
+          ))}
+        </div>
+        <div className="card" style={{padding:0}}>
+          <div className="toolbar" style={{padding:"10px 16px",borderBottom:"1px solid var(--border-grey)"}}>
+            <div style={{position:"relative",flex:1,maxWidth:320}}>
+              <Ic n="search" s={15} style={{position:"absolute",left:10,top:"50%",transform:"translateY(-50%)",color:"var(--text-subdued)"}}/>
+              <input className="form-input" placeholder="Search agreements…" value={search} onChange={e=>setSearch(e.target.value)}
+                style={{paddingLeft:32,fontSize:13}}/>
+            </div>
+            <span className="count-label">{filtered.length} agreement{filtered.length!==1?"s":""}</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Agreement ID</th>
+                <th>Agreement Name</th>
+                <th>Status</th>
+                <th>Customer</th>
+                <th>Locations</th>
+                <th>Business Unit</th>
+                <th>Summary</th>
+                <th style={{textAlign:"right"}}>Start Date</th>
+                <th style={{textAlign:"right"}}>End Date</th>
+                <th style={{textAlign:"right"}}>Total Price</th>
+                <th>Preferred Sub</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(ag=>{
+                const sub = subs.find(s=>s.id===ag.preferredSubId);
+                return (
+                  <tr key={ag.id} onClick={()=>onSelect(ag)}>
+                    <td><span style={{fontFamily:"monospace",fontSize:12,color:"var(--text-primary)",fontWeight:700}}>{ag.id}</span></td>
+                    <td><span className="td-link" style={{fontWeight:700}}>{ag.name}</span></td>
+                    <td><span className="badge badge-success" style={{fontSize:11}}>● Activated</span></td>
+                    <td style={{fontSize:13}}>{ag.customer}</td>
+                    <td style={{fontSize:13}}>{ag.locationCount} location{ag.locationCount!==1?"s":""}</td>
+                    <td style={{fontSize:13}}>{ag.businessUnit}</td>
+                    <td style={{fontSize:12,color:"var(--text-subdued)",maxWidth:220,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ag.summary||"—"}</td>
+                    <td style={{textAlign:"right",fontSize:12,color:"var(--text-subdued)",whiteSpace:"nowrap"}}>{ag.startDate}</td>
+                    <td style={{textAlign:"right",fontSize:12,color:"var(--text-subdued)",whiteSpace:"nowrap"}}>{ag.endDate}</td>
+                    <td style={{textAlign:"right",fontWeight:700}}>{fmtDollar(ag.totalPrice)}</td>
+                    <td>
+                      {sub ? (
+                        <div style={{display:"flex",alignItems:"center",gap:6}}>
+                          <div className="avatar avatar-sm" style={{width:22,height:22,fontSize:9}}>{initials(sub.name)}</div>
+                          <span style={{fontSize:12,color:"var(--text-subdued)"}}>{sub.name.split(" ").slice(0,2).join(" ")}</span>
+                        </div>
+                      ) : <span style={{fontSize:12,color:"var(--text-subdued)"}}>—</span>}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   BOOK JOB DRAWER (from Agreement Visit)
+   ================================================================ */
+const BookJobDrawer = ({ agreement, visit, subs, onClose, onBook }) => {
+  const prefSub = subs.find(s=>s.id===agreement.preferredSubId);
+  const [selectedSubId, setSelectedSubId] = useState(agreement.preferredSubId||"");
+  const [startDate, setStartDate] = useState("6/1/2026");
+  const [priority, setPriority] = useState("Normal");
+  const [summary, setSummary] = useState("");
+  const [booked, setBooked] = useState(false);
+
+  const newJobNum = "J-" + (5600 + Math.floor(Math.random()*100));
+
+  if (booked) return (
+    <div className="backdrop" onClick={e=>e.target===e.currentTarget&&onClose()}>
+      <div className="drawer" style={{alignItems:"center",justifyContent:"center",gap:16,padding:40}}>
+        <div style={{fontSize:52}}>✅</div>
+        <div style={{fontSize:18,fontWeight:800}}>Job Booked</div>
+        <div style={{fontSize:13,color:"var(--text-subdued)",textAlign:"center",maxWidth:320,lineHeight:1.6}}>
+          Job <strong>{newJobNum}</strong> has been created and linked to this agreement visit.<br/>
+          {subs.find(s=>s.id===selectedSubId)?.name} has been assigned as the preferred subcontractor.
+        </div>
+        <button className="btn btn-md btn-primary" style={{marginTop:8}} onClick={()=>{onBook(visit.id,newJobNum,{selectedSubId,startDate,agreement,visit});onClose();}}>Done</button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="backdrop" onClick={e=>e.target===e.currentTarget&&onClose()}>
+      <div className="drawer" style={{width:640,maxWidth:"95vw"}}>
+        <div className="drawer__header">
+          <span className="drawer__title">Book Job</span>
+          <button className="drawer__close" onClick={onClose}><Ic n="close" s={18}/></button>
+        </div>
+        <div className="drawer__body">
+
+          {/* Service location strip */}
+          <div style={{background:"var(--bg-grey-subdued)",border:"1px solid var(--border-grey)",borderRadius:"var(--r-md)",padding:"12px 16px",marginBottom:20}}>
+            <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.5px",color:"var(--text-subdued)",marginBottom:6}}>Service Location</div>
+            <div style={{fontWeight:700,fontSize:13}}>{agreement.customer}</div>
+            <div style={{fontSize:12,color:"var(--text-subdued)",marginTop:2}}>{agreement.primaryLocation}</div>
+            <div style={{marginTop:8,paddingTop:8,borderTop:"1px solid var(--border-grey)",display:"flex",gap:8,alignItems:"center"}}>
+              <span className="badge badge-success" style={{fontSize:11}}>Active Customer</span>
+              <span style={{fontSize:11,color:"var(--text-subdued)"}}>Booked from Service Agreement Visit</span>
+            </div>
+          </div>
+
+          {/* Booking notice */}
+          <div className="alert" style={{background:"#EEF6FF",border:"1px solid #A8D4FF",color:"#1D4ED8",marginBottom:20,fontSize:12}}>
+            <Ic n="agreements" s={15}/> <span>This job is being booked from a service agreement visit. <strong>{agreement.name}</strong> · Sold Hours: 2.75 hours</span>
+            <button style={{background:"none",border:"1px solid #93C5FD",borderRadius:"var(--r-sm)",padding:"2px 10px",fontSize:11,color:"#1D4ED8",cursor:"pointer",marginLeft:"auto",flexShrink:0}}>Detach Visit</button>
+          </div>
+
+          {/* Job Details */}
+          <div className="form-section">
+            <div className="form-section__title">Job Details</div>
+            <div className="form-grid-2">
+              <div className="form-field">
+                <label className="form-label">Job Type</label>
+                <input className="form-input" value={visit.jobType} readOnly style={{background:"var(--bg-grey-subdued)"}}/>
+              </div>
+              <div className="form-field">
+                <label className="form-label">Business Unit</label>
+                <input className="form-input" value={agreement.businessUnit} readOnly style={{background:"var(--bg-grey-subdued)"}}/>
+              </div>
+            </div>
+            <div className="form-field" style={{marginTop:12}}>
+              <label className="form-label">Service Agreement</label>
+              <input className="form-input" value={agreement.name} readOnly style={{background:"var(--bg-grey-subdued)"}}/>
+              <span className="form-hint">This job is marked as a Service Agreement visit.</span>
+            </div>
+            <div className="form-grid-2" style={{marginTop:12}}>
+              <div className="form-field">
+                <label className="form-label">Marketing Campaign</label>
+                <select className="form-input">
+                  <option>Existing Client</option><option>Referral</option><option>None</option>
+                </select>
+              </div>
+              <div className="form-field">
+                <label className="form-label">Priority</label>
+                <select className="form-input" value={priority} onChange={e=>setPriority(e.target.value)}>
+                  <option>Normal</option><option>High</option><option>Urgent</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Schedule */}
+          <div className="form-section">
+            <div className="form-section__title">Schedule</div>
+            <div className="form-grid-2">
+              <div className="form-field">
+                <label className="form-label">Start Date <span className="req">*</span></label>
+                <input className="form-input" value={startDate} onChange={e=>setStartDate(e.target.value)}/>
+              </div>
+              <div className="form-field">
+                <label className="form-label">Arrival Window</label>
+                <select className="form-input">
+                  <option value="">—</option>
+                  <option>8:00 AM – 10:00 AM</option><option>10:00 AM – 12:00 PM</option>
+                  <option>12:00 PM – 2:00 PM</option><option>2:00 PM – 4:00 PM</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Subcontractor Assignment */}
+          <div className="form-section" style={{background:"var(--bg-primary-subdued)",border:"1px solid #A8D4FF",borderRadius:"var(--r-md)",padding:"14px 16px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+              <Ic n="agreements" s={15} style={{color:"var(--text-primary)"}}/>
+              <div className="form-section__title" style={{marginBottom:0,color:"var(--text-primary)"}}>Preferred Subcontractor</div>
+              <span style={{fontSize:11,background:"#DBEAFE",color:"#1D4ED8",padding:"2px 8px",borderRadius:"var(--r-full)",fontWeight:700}}>Pre-selected from Agreement</span>
+            </div>
+            <div className="form-field">
+              <label className="form-label">Assign Subcontractor</label>
+              <select className="form-input" value={selectedSubId} onChange={e=>setSelectedSubId(parseInt(e.target.value))}>
+                <option value="">— None —</option>
+                {subs.filter(s=>s.status==="active").map(s=>(
+                  <option key={s.id} value={s.id}>{s.name} · {s.trades[0]}</option>
+                ))}
+              </select>
+            </div>
+            {selectedSubId && subs.find(s=>s.id===selectedSubId) && (
+              <div style={{display:"flex",alignItems:"center",gap:10,marginTop:10,padding:"10px 12px",background:"white",borderRadius:"var(--r-sm)",border:"1px solid var(--border-grey)"}}>
+                <div className="avatar">{initials(subs.find(s=>s.id===selectedSubId).name)}</div>
+                <div>
+                  <div style={{fontWeight:700,fontSize:13}}>{subs.find(s=>s.id===selectedSubId).name}</div>
+                  <div style={{fontSize:12,color:"var(--text-subdued)"}}>{subs.find(s=>s.id===selectedSubId).trades.join(", ")} · {subs.find(s=>s.id===selectedSubId).region}</div>
+                </div>
+                <div style={{marginLeft:"auto",display:"flex",gap:8}}>
+                  <CoiBadge s={subs.find(s=>s.id===selectedSubId).coi}/>
+                  {subs.find(s=>s.id===selectedSubId).w9 && <span className="badge badge-success">W-9</span>}
+                </div>
+              </div>
+            )}
+            <div style={{fontSize:11,color:"var(--text-subdued)",marginTop:8}}>The selected subcontractor will receive an assignment notification and appear in the job's subcontractor roster.</div>
+          </div>
+
+          <div className="form-section">
+            <div className="form-section__title">Additional Details</div>
+            <div className="form-grid-2">
+              <div className="form-field">
+                <label className="form-label">Customer PO # (optional)</label>
+                <input className="form-input" placeholder="e.g. PO-2026-0088"/>
+              </div>
+              <div className="form-field">
+                <label className="form-label">Technician (optional)</label>
+                <select className="form-input"><option value="">— Unassigned —</option><option>Schedule Assistant</option></select>
+              </div>
+            </div>
+            <div className="form-field" style={{marginTop:12}}>
+              <label className="form-label">Summary (optional)</label>
+              <textarea className="form-textarea" rows={2} placeholder="Add a job summary…" value={summary} onChange={e=>setSummary(e.target.value)}/>
+            </div>
+          </div>
+
+        </div>
+        <div className="drawer__footer">
+          <button className="btn btn-md btn-secondary" onClick={onClose}>Cancel</button>
+          <button className="btn btn-md btn-primary" onClick={()=>setBooked(true)}>
+            <Ic n="book" s={15}/> Book Job
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ================================================================
+   AGREEMENT DETAIL VIEW
+   ================================================================ */
+const AgreementDetailView = ({ agreement, subs, onBack, onBookVisit }) => {
+  const [tab, setTab] = useState("visits");
+  const prefSub = subs.find(s=>s.id===agreement.preferredSubId);
+  const visits = agreement.visits;
+
+  const AGR_NAV = [
+    {section:"OVERVIEW",   items:[{id:"dashboard",label:"Dashboard"},{id:"details",label:"Details"}]},
+    {section:"FINANCIALS", items:[{id:"profitability",label:"Profitability"},{id:"billing",label:"Billing and Invoices"}]},
+    {section:"OPERATIONS", items:[{id:"visits",label:"Visits"},{id:"equipment",label:"Equipment"},{id:"materials",label:"Materials"},{id:"pullthrough",label:"Pull-Through Work"}]},
+    {section:"",           items:[{id:"audit",label:"Audit Trail"}]},
+  ];
+
+  return (
+    <div style={{display:"flex",flex:1,minHeight:0,overflow:"hidden"}}>
+
+      {/* Agreement left nav */}
+      <nav style={{width:180,flexShrink:0,background:"white",borderRight:"1px solid var(--border-grey)",overflowY:"auto",padding:"8px 0"}}>
+        <div style={{padding:"10px 16px 6px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:12,color:"var(--text-subdued)",fontWeight:600}}
+          onClick={onBack}>
+          <Ic n="chev" s={12} style={{transform:"rotate(180deg)"}}/> Agreements
+        </div>
+        <div style={{padding:"8px 16px 4px",fontSize:11,fontWeight:700,color:"var(--text-muted)",textTransform:"uppercase",letterSpacing:"0.5px",marginTop:4}}>Service Agreement</div>
+        {AGR_NAV.map((group,gi)=>(
+          <div key={gi}>
+            {group.section && <div style={{padding:"10px 16px 4px",fontSize:10,fontWeight:700,color:"var(--text-muted)",textTransform:"uppercase",letterSpacing:"0.5px"}}>{group.section}</div>}
+            {group.items.map(item=>(
+              <div key={item.id}
+                style={{padding:"7px 16px",fontSize:13,cursor:"pointer",fontWeight:tab===item.id?700:400,color:tab===item.id?"var(--text-primary)":"var(--text-default)",background:tab===item.id?"var(--bg-primary-subdued)":"transparent",borderLeft:tab===item.id?"3px solid var(--border-primary)":"3px solid transparent"}}
+                onClick={()=>setTab(item.id)}>
+                {item.label}
+              </div>
+            ))}
+          </div>
+        ))}
+      </nav>
+
+      {/* Main content */}
+      <div style={{display:"flex",flexDirection:"column",flex:1,minHeight:0}}>
+        {/* Agreement header */}
+        <div style={{background:"white",borderBottom:"1px solid var(--border-grey)",padding:"16px 28px",flexShrink:0}}>
+          <div style={{fontSize:20,fontWeight:800,marginBottom:10}}>{agreement.name}</div>
+          <div style={{display:"flex",gap:28,flexWrap:"wrap",alignItems:"center",fontSize:12}}>
+            {[
+              {l:"Status",     v:<span className="badge badge-success" style={{fontSize:11}}>● Activated</span>},
+              {l:"Customer",   v:<span style={{color:"var(--text-primary)",fontWeight:600,cursor:"pointer"}}>{agreement.customer}</span>},
+              {l:"Covered Locations", v:<span style={{color:"var(--text-primary)",fontWeight:600,cursor:"pointer"}}>{agreement.locationCount} Location{agreement.locationCount!==1?"s":""}</span>},
+              {l:"Start Date", v:agreement.startDate},
+              {l:"Duration",   v:agreement.duration},
+              {l:"Auto-renew", v:agreement.autoRenew?<span className="badge badge-success">Enabled</span>:<span className="badge badge-neutral">Disabled</span>},
+              {l:"Contacts",   v:<span style={{color:"var(--text-primary)",cursor:"pointer"}}>{agreement.contacts} Contact{agreement.contacts!==1?"s":""}</span>},
+            ].map(f=>(
+              <div key={f.l} style={{display:"flex",flexDirection:"column",gap:2}}>
+                <span style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.5px",color:"var(--text-subdued)"}}>{f.l}</span>
+                <span style={{fontWeight:400}}>{f.v}</span>
+              </div>
+            ))}
+            <div style={{marginLeft:"auto",textAlign:"right"}}>
+              <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.5px",color:"var(--text-subdued)"}}>Total Agreement Price</div>
+              <div style={{fontSize:22,fontWeight:800,color:"var(--text-default)"}}>{fmtDollar(agreement.totalPrice)}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tab content */}
+        <div style={{flex:1,minHeight:0,overflowY:"auto",background:"var(--bg-grey-subdued)",padding:24}}>
+
+          {tab==="visits" && (
+            <div>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
+                <div style={{fontSize:16,fontWeight:800}}>Visits</div>
+                <div style={{display:"flex",gap:8}}>
+                  <button className="btn btn-sm btn-secondary">Group by Recurrence</button>
+                  <button className="btn btn-sm btn-secondary">Order by Visit Window</button>
+                  <button className="btn btn-sm btn-primary"><Ic n="add" s={14}/> Add Visit</button>
+                </div>
+              </div>
+              <div className="card" style={{padding:0}}>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Visit Name</th>
+                      <th>Visit Recurrence</th>
+                      <th>Visit Window</th>
+                      <th>Location</th>
+                      <th>Job #</th>
+                      <th>Job Type</th>
+                      <th>Procurement Status</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {visits.map(v=>(
+                      <tr key={v.id} style={{cursor:"default",background:v.jobId?"var(--bg-grey-subdued)":undefined}}>
+                        <td style={{fontWeight:600,color:"var(--text-primary)",cursor:"pointer"}}>{v.name}</td>
+                        <td>
+                          <span style={{display:"inline-flex",alignItems:"center",gap:5,background:"#E0F7FF",color:"#0369A1",borderRadius:"var(--r-full)",padding:"3px 10px",fontSize:12,fontWeight:700}}>
+                            <Ic n="refresh" s={11}/> {v.recurrence}
+                          </span>
+                        </td>
+                        <td style={{fontSize:12,color:"var(--text-subdued)",whiteSpace:"nowrap"}}>{v.windowStr}</td>
+                        <td style={{fontSize:13}}>{v.location}</td>
+                        <td>
+                          {v.jobId
+                            ? <span style={{color:"var(--text-primary)",fontWeight:700,cursor:"pointer",fontSize:13}}>{v.jobId}</span>
+                            : <button className="btn btn-xs btn-secondary" style={{display:"inline-flex",alignItems:"center",gap:4}}
+                                onClick={()=>onBookVisit(v)}>
+                                <Ic n="book" s={11}/> Book Job
+                              </button>
+                          }
+                        </td>
+                        <td style={{fontSize:13}}>{v.jobType}</td>
+                        <td style={{fontSize:12,color:"var(--text-subdued)"}}>{v.procStatus}</td>
+                        <td>
+                          <button className="btn btn-xs btn-secondary">Actions <Ic n="chev" s={10}/></button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div style={{padding:"10px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",borderTop:"1px solid var(--border-grey)",fontSize:12,color:"var(--text-subdued)"}}>
+                  <span>1 – {visits.length} of {visits.length} items</span>
+                  <button className="btn btn-sm btn-secondary"><Ic n="add" s={13}/> Add Visit</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {tab!=="visits" && (
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:60,gap:12,textAlign:"center"}}>
+              <div style={{width:56,height:56,borderRadius:"var(--r-lg)",background:"var(--bg-grey)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--text-subdued)"}}>
+                <Ic n="agreements" s={28}/>
+              </div>
+              <div style={{fontSize:16,fontWeight:800,color:"var(--text-default)"}}>
+                {AGR_NAV.flatMap(g=>g.items).find(i=>i.id===tab)?.label || tab}
+              </div>
+              <div style={{fontSize:13,color:"var(--text-subdued)",maxWidth:320,lineHeight:1.6}}>
+                This is a placeholder. Only the <strong>Visits</strong> tab is part of the prototype flow.
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
     </div>
@@ -3715,24 +4775,29 @@ const SubPortalView = ({subs, assignments, jobs, onAccept, onDecline}) => {
 /* ================================================================
    ROOT APP
    ================================================================ */
-const RAIL_ITEMS = [
-  {id:"dashboard",  label:"Dashboard"},
-  {id:"calls",      label:"Calls"},
-  {id:"sched",      label:"Schedule"},
-  {id:"dispatch",   label:"Dispatch"},
-  {id:"accounting", label:"Accounting"},
-  {id:"inventory",  label:"Inventory"},
-  {id:"followup",   label:"Follow Up"},
-  {id:"reports",    label:"Reports"},
-  {id:"marketing",  label:"Marketing"},
-  {id:"pricebook",  label:"Pricebook"},
-  {id:"projects",   label:"Projects"},
-  {id:"subs",       label:"Subs"},
+const RAIL_ITEMS_PRIMARY = [
+  {id:"subs",        label:"Subs"},
+  {id:"projects",    label:"Projects"},
+  {id:"jobs",        label:"Jobs"},
+  {id:"agreements",  label:"Agreements"},
 ];
+const RAIL_ITEMS_OTHER = [
+  {id:"dashboard",   label:"Dashboard"},
+  {id:"calls",       label:"Calls"},
+  {id:"sched",       label:"Schedule"},
+  {id:"dispatch",    label:"Dispatch"},
+  {id:"accounting",  label:"Accounting"},
+  {id:"inventory",   label:"Inventory"},
+  {id:"followup",    label:"Follow Up"},
+  {id:"reports",     label:"Reports"},
+  {id:"marketing",   label:"Marketing"},
+  {id:"pricebook",   label:"Pricebook"},
+];
+const RAIL_ITEMS = [...RAIL_ITEMS_PRIMARY, ...RAIL_ITEMS_OTHER];
 
 function App() {
   const [subs, setSubs]               = useState(SUBS_INIT);
-  const [jobs]                        = useState(JOBS_INIT);
+  const [jobs, setJobs]               = useState(JOBS_INIT);
   const [assignments, setAssignments] = useState(ASSIGNMENTS_INIT);
   const [activeRail, setRail]         = useState("subs");
   const [activeSection, setSection]   = useState("directory");
@@ -3740,6 +4805,7 @@ function App() {
   const [showAdd, setShowAdd]         = useState(false);
   const [showAssign, setShowAssign]   = useState(false);
   const [assignTarget, setAssignTarget] = useState(null);
+  const [jobTarget, setJobTarget]     = useState(null);
   const [spendExpanded, setSpendExpanded] = useState(null);
   // Projects module state
   const [selectedProject, setSelectedProject] = useState(null);
@@ -3756,9 +4822,18 @@ function App() {
   // Notify flow state
   const [showNotify,   setShowNotify]   = useState(false);
   const [notifyTarget, setNotifyTarget] = useState(null);
+  // Agreements module state
+  const [agreements, setAgreements]           = useState(AGREEMENTS_INIT);
+  const [selectedAgreement, setSelectedAgreement] = useState(null);
+  const [bookingVisit, setBookingVisit]       = useState(null);
+  const [showBookJob, setShowBookJob]         = useState(false);
+  const [selectedJob, setSelectedJob]         = useState(null);
+  const [jobTab, setJobTab]                   = useState("overview");
+  const [projectsView, setProjectsView]       = useState("projects"); // "projects" | "jobs"
 
-  const openAssign = useCallback((sub = null) => {
+  const openAssign = useCallback((sub = null, job = null) => {
     setAssignTarget(sub);
+    setJobTarget(job);
     setShowAssign(true);
   }, []);
 
@@ -3821,7 +4896,7 @@ function App() {
 
   const renderMain = () => {
     /* ── Not-in-scope rails ── */
-    if (activeRail !== "subs" && activeRail !== "projects") {
+    if (activeRail !== "subs" && activeRail !== "projects" && activeRail !== "jobs" && activeRail !== "agreements") {
       const label = RAIL_ITEMS.find(r => r.id === activeRail)?.label || activeRail;
       return (
         <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:16,padding:40}}>
@@ -3837,14 +4912,47 @@ function App() {
       );
     }
 
+    /* ── Agreements module ── */
+    if (activeRail === "agreements") {
+      if (selectedAgreement) {
+        return <AgreementDetailView
+          agreement={selectedAgreement}
+          subs={subs}
+          onBack={()=>setSelectedAgreement(null)}
+          onBookVisit={v=>{ setBookingVisit(v); setShowBookJob(true); }}
+        />;
+      }
+      return <AgreementsListView agreements={agreements} subs={subs} onSelect={a=>setSelectedAgreement(a)} />;
+    }
+
+    /* ── Jobs module ── */
+    if (activeRail === "jobs") {
+      if (selectedJob) {
+        const openIssuePo = a => { setCreatePoTarget(a); setShowCreatePo(true); };
+        return <JobDetailView
+          job={selectedJob}
+          assignments={assignments}
+          subs={subs}
+          onBack={()=>setSelectedJob(null)}
+          onAssign={()=>openAssign(null, selectedJob)}
+          onIssuePo={openIssuePo}
+          onNotify={a=>{ setNotifyTarget(a); setShowNotify(true); }}
+        />;
+      }
+      return <JobsListView jobs={jobs} assignments={assignments} subs={subs}
+        onSelect={j=>{ setSelectedJob(j); setJobTab("subcontractors"); }} />;
+    }
+
     /* ── Projects module ── */
     if (activeRail === "projects") {
-      if (!selectedProject) return <ProjectsList onSelect={p=>{ setSelectedProject(p); setProjectTab("dashboard"); }} />;
+      if (!selectedProject) {
+        return <ProjectsList onSelect={p=>{ setSelectedProject(p); setProjectTab("dashboard"); }} />;
+      }
       const tabContent = () => {
         const openIssuePo = a => { setCreatePoTarget(a); setShowCreatePo(true); };
         if (projectTab === "dashboard")  return <ProjectDashboard project={selectedProject} />;
         if (projectTab === "financials") return <ProjectFinancials project={selectedProject} assignments={assignments} />;
-        if (projectTab === "subs")       return <ProjectSubsTab project={selectedProject} subs={subs} assignments={assignments} onAssign={()=>openAssign(null)} onIssuePo={openIssuePo} />;
+        if (projectTab === "subs")       return <ProjectSubsTab project={selectedProject} subs={subs} assignments={assignments} onAssign={()=>openAssign(null, selectedProject)} onIssuePo={openIssuePo} onNotify={a=>{ setNotifyTarget(a); setShowNotify(true); }} />;
         if (projectTab === "purchasing") return <ProjectPurchasingTab project={selectedProject} subs={subs} assignments={assignments} onIssuePo={openIssuePo} onUpdatePoStatus={handleUpdatePoStatus} />;
         return <ProjectStub name={PROJECT_NAV.find(n=>n.id===projectTab)?.label||projectTab} />;
       };
@@ -3921,10 +5029,7 @@ function App() {
     if (activeSection === "compliance-docs") {
       return <ComplianceDocsView subs={subs} complianceDocs={complianceDocs} />;
     }
-    if (activeSection === "schedule") {
-      return <ScheduleView schedule={schedule} subs={subs} jobs={jobs} onNew={()=>openAssign(null)} />;
-    }
-    if (activeSection === "portal") {
+if (activeSection === "portal") {
       return <SubPortalView subs={subs} assignments={assignments} jobs={jobs}
         onAccept={handleAcceptAssignment} onDecline={handleDeclineAssignment} />;
     }
@@ -3942,7 +5047,15 @@ function App() {
               fontFamily="'Nunito Sans', sans-serif">ST</text>
           </svg>
         </div>
-        {RAIL_ITEMS.map(item => (
+        {RAIL_ITEMS_PRIMARY.map(item => (
+          <div key={item.id} className={`icon-rail__item ${activeRail===item.id?"active":""}`}
+            onClick={()=>setRail(item.id)}>
+            <Ic n={item.id} s={17}/>
+            <span>{item.label}</span>
+          </div>
+        ))}
+        <div style={{width:28,height:1,background:"rgba(255,255,255,0.12)",margin:"6px 0"}}/>
+        {RAIL_ITEMS_OTHER.map(item => (
           <div key={item.id} className={`icon-rail__item ${activeRail===item.id?"active":""}`}
             onClick={()=>setRail(item.id)}>
             <Ic n={item.id} s={17}/>
@@ -3964,7 +5077,6 @@ function App() {
               {id:"directory",    label:"Directory"},
               {id:"assignments",  label:"Assignments"},
               {id:"subcontracts", label:"Subcontracts"},
-              {id:"schedule",     label:"Schedule"},
             ].map(item => (
               <div key={item.id}
                 className={`side-nav__item ${activeSection===item.id?"active":""}`}
@@ -4015,12 +5127,62 @@ function App() {
           </div>
         </>}
 
+        {/* ── Agreements module nav ── */}
+        {activeRail === "agreements" && <>
+          <div className="side-nav__header">Agreements</div>
+          <div className="side-nav__group">
+            <div className={`side-nav__item ${!selectedAgreement?"active":""}`}
+              onClick={()=>setSelectedAgreement(null)}>
+              Service Agreements
+            </div>
+          </div>
+          {selectedAgreement && (
+            <div className="side-nav__group">
+              <div className="side-nav__label">Current</div>
+              <div className="side-nav__item active" style={{fontSize:12,lineHeight:1.4,whiteSpace:"normal",padding:"8px 16px"}}>
+                {selectedAgreement.name}
+              </div>
+            </div>
+          )}
+        </>}
+
         {/* ── Projects module nav (list) ── */}
         {activeRail === "projects" && !selectedProject && <>
           <div className="side-nav__header">Projects</div>
           <div className="side-nav__group">
             <div className="side-nav__item active">All Projects</div>
           </div>
+        </>}
+
+        {/* ── Jobs module nav ── */}
+        {activeRail === "jobs" && !selectedJob && <>
+          <div className="side-nav__header">Jobs</div>
+          <div className="side-nav__group">
+            <div className="side-nav__item active">All Jobs</div>
+          </div>
+        </>}
+
+        {/* ── Job detail nav ── */}
+        {activeRail === "jobs" && selectedJob && <>
+          <div className="side-nav__back"
+            onClick={()=>setSelectedJob(null)}>
+            <Ic n="back" s={14}/> Jobs
+          </div>
+          <div style={{padding:"8px 16px 4px",fontSize:11,fontWeight:700,color:"var(--text-muted)",textTransform:"uppercase",letterSpacing:"0.5px"}}>
+            {selectedJob.id}
+          </div>
+          {[
+            {id:"overview",        label:"Overview"},
+            {id:"subcontractors",  label:"Subcontractors"},
+            {id:"purchasing",      label:"Purchasing"},
+            {id:"notes",           label:"Notes"},
+          ].map(item=>(
+            <div key={item.id}
+              className={`side-nav__item ${jobTab===item.id?"active":""}`}
+              onClick={()=>setJobTab(item.id)}>
+              {item.label}
+            </div>
+          ))}
         </>}
 
         {/* ── Projects module nav (project detail) ── */}
@@ -4055,7 +5217,8 @@ function App() {
           jobs={jobs}
           assignments={assignments}
           preSelectedSub={assignTarget}
-          onClose={()=>{ setShowAssign(false); setAssignTarget(null); }}
+          preSelectedJob={jobTarget}
+          onClose={()=>{ setShowAssign(false); setAssignTarget(null); setJobTarget(null); }}
           onSave={handleSaveAssignment}
         />
       )}
@@ -4074,6 +5237,63 @@ function App() {
           jobs={jobs}
           onClose={()=>{ setShowNotify(false); setNotifyTarget(null); }}
           onSend={handleNotifySend}
+        />
+      )}
+      {showBookJob && bookingVisit && selectedAgreement && (
+        <BookJobDrawer
+          agreement={selectedAgreement}
+          visit={bookingVisit}
+          subs={subs}
+          onClose={()=>{ setShowBookJob(false); setBookingVisit(null); }}
+          onBook={(visitId, jobNum, bookData)=>{
+            // Update agreement visit with job number
+            setAgreements(prev => prev.map(ag =>
+              ag.id !== selectedAgreement.id ? ag : {
+                ...ag,
+                visits: ag.visits.map(v => v.id===visitId ? {...v, jobId:jobNum} : v)
+              }
+            ));
+            setSelectedAgreement(prev => prev ? {
+              ...prev,
+              visits: prev.visits.map(v => v.id===visitId ? {...v, jobId:jobNum} : v)
+            } : prev);
+            // Create the new job
+            if (bookData) {
+              const newJob = {
+                id: jobNum,
+                name: `${bookData.visit.jobType} – ${bookData.visit.location}`,
+                customer: bookData.agreement.customer,
+                type: "job",
+                value: 0,
+                address: bookData.agreement.primaryLocation || bookData.agreement.customer,
+                jobType: bookData.visit.jobType,
+                businessUnit: bookData.agreement.businessUnit,
+                status: "scheduled",
+                agreementId: bookData.agreement.id,
+                agreementName: bookData.agreement.name,
+              };
+              setJobs(prev => [newJob, ...prev]);
+              // Create assignment if a sub was selected
+              if (bookData.selectedSubId) {
+                const newAssign = {
+                  id: Date.now(),
+                  subId: bookData.selectedSubId,
+                  jobId: jobNum,
+                  scope: `${bookData.visit.jobType} – from ${bookData.agreement.name}`,
+                  status: "active",
+                  costCode: "",
+                  contractedAmt: 0,
+                  pos: [],
+                };
+                setAssignments(prev => [newAssign, ...prev]);
+              }
+              // Navigate to the new job page
+              setRail("jobs");
+              setSelectedJob(newJob);
+              setJobTab("subcontractors");
+              setSelectedProject(null);
+            }
+          }}
         />
       )}
     </div>
